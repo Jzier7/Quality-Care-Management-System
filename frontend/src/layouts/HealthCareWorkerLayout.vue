@@ -15,21 +15,21 @@ import { defineComponent, ref, defineAsyncComponent } from 'vue';
 
 const menuList = [
   {
-    icon: 'medical_information',
-    label: 'HealthCare Workers',
-    path: '/healthcare-worker/healthcare-workers',
+    icon: 'folder_shared',
+    label: 'Medical Records',
+    path: '/healthcare-worker/medical-records',
     separator: false
   },
   {
-    icon: 'campaign',
-    label: 'Announcement',
+    icon: 'event_available',
+    label: 'Schedule Checkup',
+    path: '/healthcare-worker/schedule-checkup',
+    separator: false
+  },
+  {
+    icon: 'announcement',
+    label: 'Information Board',
     path: '/healthcare-worker/information-board',
-    separator: false
-  },
-  {
-    icon: 'forum',
-    label: 'Forum',
-    path: '/healthcare-worker/emergency-contact',
     separator: false
   },
 ]

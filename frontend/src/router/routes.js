@@ -19,9 +19,9 @@ const routes = [
     path: '/admin',
     component: () => import('layouts/AdminLayout.vue'),
     children: [
-      { path: 'healthcare-workers', component: () => import('pages/MainPages/HealthCareWorkers.vue') },
-      { path: 'information-board', component: () => import('pages/MainPages/InformationBoard.vue') },
-      { path: 'emergency-contact', component: () => import('pages/MainPages/EmergencyContact.vue') },
+      { path: 'healthcare-workers', component: () => import('pages/Admin/HealthCareWorkers.vue') },
+      { path: 'information-board', component: () => import('pages/Admin/InformationBoard.vue') },
+      { path: 'emergency-contact', component: () => import('pages/Admin/EmergencyContact.vue') },
     ]
   },
 
@@ -29,9 +29,9 @@ const routes = [
     path: '/healthcare-worker',
     component: () => import('layouts/HealthCareWorkerLayout.vue'),
     children: [
-      { path: 'medical-records', component: () => import('pages/MainPages/MedicalRecords.vue') },
-      { path: 'schedule-checkup', component: () => import('pages/MainPages/ScheduleCheckUp.vue') },
-      { path: 'information-board', component: () => import('pages/MainPages/InformationBoard.vue') },
+      { path: 'medical-records', component: () => import('pages/HealthCareWorker/MedicalRecords.vue') },
+      { path: 'schedule-checkup', component: () => import('pages/HealthCareWorker/ScheduleCheckUp.vue') },
+      { path: 'information-board', component: () => import('pages/HealthCareWorker/InformationBoard.vue') },
     ]
   },
 
