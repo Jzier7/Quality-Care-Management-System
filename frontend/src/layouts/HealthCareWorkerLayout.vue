@@ -1,7 +1,8 @@
 <template>
-  <q-layout view="hHh lpr lfr">
+  <q-layout view="hHh Lpr lff">
     <AppHeader :version="$q.version" @toggle-drawer="toggleLeftDrawer" />
-    <SideNav :links="linksList" :drawerOpen="leftDrawerOpen" :menuList="menuList" @update:drawerOpen="leftDrawerOpen = $event" />
+    <SideNav :links="linksList" :drawerOpen="leftDrawerOpen" :menuList="menuList"
+      @update:drawerOpen="leftDrawerOpen = $event" />
 
     <q-page-container>
       <router-view />
@@ -11,7 +12,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, defineAsyncComponent } from 'vue';
+import { defineComponent, defineAsyncComponent } from 'vue';
 
 const menuList = [
   {
@@ -53,6 +54,3 @@ export default defineComponent({
   }
 });
 </script>
-
-
-

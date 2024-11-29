@@ -1,7 +1,8 @@
 <template>
-  <q-layout view="hHh lpr lfr">
+  <q-layout view="hHh Lpr lff">
     <AppHeader :version="$q.version" @toggle-drawer="toggleLeftDrawer" />
-    <SideNav :links="linksList" :drawerOpen="leftDrawerOpen" :menuList="menuList" @update:drawerOpen="leftDrawerOpen = $event" />
+    <SideNav :links="linksList" :drawerOpen="leftDrawerOpen" :menuList="menuList"
+      @update:drawerOpen="leftDrawerOpen = $event" />
 
     <q-page-container>
       <router-view />
@@ -53,6 +54,3 @@ export default defineComponent({
   }
 });
 </script>
-
-
-

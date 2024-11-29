@@ -1,12 +1,6 @@
 <template>
-  <q-drawer
-    :model-value="drawerOpen"
-    show-if-above
-    :width="300"
-    :breakpoint="700"
-    bordered
-    @update:model-value="$emit('update:drawerOpen', $event)"
-  >
+  <q-drawer :model-value="drawerOpen" show-if-above :width="300" :breakpoint="700" bordered
+    @update:model-value="$emit('update:drawerOpen', $event)">
     <q-scroll-area class="fit">
 
       <div class="flex flex-col justify-center items-center py-4">
@@ -19,13 +13,8 @@
       <q-list>
         <template v-for="(menuItem, index) in menuList" :key="index">
 
-          <q-item
-            clickable
-            v-ripple
-            @click="navigateTo(menuItem.path)"
-            :active="$route.path === menuItem.path"
-            :class="[$route.path === menuItem.path ? 'bg-secondary text-white' : 'text-dark', 'mx-2 rounded-lg']"
-          >
+          <q-item clickable v-ripple @click="navigateTo(menuItem.path)" :active="$route.path === menuItem.path"
+            :class="[$route.path === menuItem.path ? 'bg-secondary text-white' : 'text-dark', 'mx-2 rounded-lg']">
             <q-item-section avatar> <q-icon :name="menuItem.icon" /> </q-item-section>
             <q-item-section> {{ menuItem.label }} </q-item-section>
           </q-item>
@@ -38,6 +27,8 @@
 </template>
 
 <script>
+import { useUserStore } from 'src/stores/modules/userStore';
+
 export default {
   name: 'SideNav',
   props: {
@@ -57,14 +48,19 @@ export default {
   data() {
     return {
       drawer: false,
-      userName: 'Full Name',
+      userName: '',
     }
   },
   methods: {
     navigateTo(path) {
       this.$router.push(path);
     }
-  }
+  },
+  created() {
+    const userStore = useUserStore();
+    userStore.fetchUser().then(() => {
+      this.userName = userStore.userData.first_name + ' ' + userStore.userData.last_name;
+    });
+  },
 }
 </script>
-

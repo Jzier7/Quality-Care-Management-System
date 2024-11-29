@@ -5,27 +5,32 @@
         <div class="row flex flex-center signup-container w-full">
           <div class="col-12 col-md-7 q-pa-lg flex flex-center">
             <div class="text-container">
-              <h1 class="text-center text-dark">Create an Account</h1>
-              <p class="text-center text-dark mb-4 text-sm">
+              <h2 class="text-center text-dark">Create an Account</h2>
+              <p class="text-center text-dark text-sm">
                 Join Lapu-Lapu District Hospital for seamless access to our services.
               </p>
             </div>
 
-            <q-form
-              @submit="onSubmit"
-              @reset="onReset"
-              class="full-height flex flex-center column q-pa-lg bg-dark rounded-lg form-container px-12"
-            >
+            <q-form @submit="onSubmit" @reset="onReset"
+              class="full-height flex flex-center column q-pa-lg bg-dark rounded-lg form-container px-12">
               <div class="image-container">
                 <img src="~/assets/logo.png" alt="Logo" />
               </div>
 
-              <span class="w-full q-mt-md">
-                <BaseInput v-model="form.name" label="Full Name" type="text" color="primary" bgColor="white" />
-                <BaseInput v-model="form.email" label="Email" type="email" color="primary" bgColor="white" />
-                <BaseInput v-model="form.password" label="Password" type="password" color="primary" bgColor="white" />
-                <BaseInput v-model="form.confirmPassword" label="Confirm Password" type="password" color="primary" bgColor="white" />
-              </span>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-full q-pt-md">
+                <BaseInput v-model="form.first_name" label="First Name" type="text" color="primary" bgColor="white"
+                  inputClass="col-span-2 md:col-span-2" />
+                <BaseInput v-model="form.middle_name" label="Middle Name" type="text" color="primary" bgColor="white"
+                  inputClass="col-span-2 md:col-span-2" />
+                <BaseInput v-model="form.last_name" label="Last Name" type="text" color="primary" bgColor="white"
+                  inputClass="col-span-2 md:col-span-2" />
+                <BaseInput v-model="form.email" label="Email" type="email" color="primary" bgColor="white"
+                  inputClass="col-span-2 md:col-span-2" />
+                <BaseInput v-model="form.password" label="Password" type="password" color="primary" bgColor="white"
+                  inputClass="col-span-2 md:col-span-1" />
+                <BaseInput v-model="form.confirm_password" label="Confirm Password" type="password" color="primary"
+                  bgColor="white" inputClass="col-span-2 md:col-span-1" />
+              </div>
 
               <BaseButton label="Sign Up" type="submit" color="white" textColor="grey" class="q-mt-lg" />
 
@@ -44,7 +49,9 @@
 </template>
 
 <script>
+import { Notify } from 'quasar';
 import { defineAsyncComponent } from 'vue';
+import authService from '../../services/authService';
 
 export default {
   name: 'SignUp',
@@ -55,16 +62,34 @@ export default {
   data() {
     return {
       form: {
-        name: '',
+        first_name: '',
+        middle_name: '',
+        last_name: '',
         email: '',
         password: '',
-        confirmPassword: '',
+        confirm_password: '',
       },
     };
   },
   methods: {
     async onSubmit() {
-      // Handle form submission
+      try {
+        const response = await authService.register(this.form);
+
+        Notify.create({
+          type: 'positive',
+          position: 'top',
+          message: response.message
+        });
+
+        this.$router.push('/');
+      } catch (error) {
+        Notify.create({
+          type: 'negative',
+          position: 'top',
+          message: error.response.data.message
+        });
+      }
     },
     navigateToSignIn() {
       this.$router.push('/');
@@ -76,18 +101,16 @@ export default {
 <style lang="scss" scoped>
 .signup-container {
   max-width: 1200px !important;
-  padding: 2rem;
 }
 
 .text-container {
   text-align: center;
-  margin-bottom: 1.5rem;
 }
 
 .form-container {
-  max-width: 600px; /* Increase the width of the blue card */
+  max-width: 700px;
   width: 100%;
-  background-color: #004f97; /* Ensure it maintains the blue background */
+  background-color: #004f97;
 }
 
 .image-container {
@@ -102,8 +125,6 @@ export default {
 }
 
 span.w-full {
-  margin-top: 1rem;
   width: 100%;
 }
 </style>
-

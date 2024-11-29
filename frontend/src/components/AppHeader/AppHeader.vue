@@ -1,13 +1,7 @@
 <template>
   <q-header elevated class="py-3 bg-dark">
     <q-toolbar>
-      <q-btn
-        flat
-        dense
-        round
-        aria-label="Menu"
-        @click="$emit('toggle-drawer')"
-      >
+      <q-btn flat dense round aria-label="Menu" @click="$emit('toggle-drawer')">
         <q-avatar>
           <img src="~/assets/logo.png" alt="Logo" />
         </q-avatar>
@@ -25,9 +19,9 @@
 </template>
 
 <script>
-import { Notify } from 'quasar'
+import { Notify } from 'quasar';
 import { defineAsyncComponent } from 'vue';
-import authService from '../../service/authService.js';
+import { useAuthStore } from 'src/stores/modules/authStore';
 
 export default {
   name: 'AppHeader',
@@ -42,13 +36,14 @@ export default {
   },
   methods: {
     async logout() {
-      const { message } = await authService.logout(this.form);
+      const authStore = useAuthStore();
+      const { message } = await authStore.logout();
 
       Notify.create({
         type: 'positive',
         position: 'top',
         message: message
-      })
+      });
 
       this.$router.push('/');
     },
@@ -67,4 +62,3 @@ export default {
   }
 }
 </script>
-

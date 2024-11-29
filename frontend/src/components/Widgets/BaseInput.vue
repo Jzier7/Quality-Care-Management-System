@@ -1,20 +1,11 @@
 <template>
-  <q-input
-    v-model="inputValue"
-    :label="label"
-    :type="type"
-    :standout="standout"
-    :class="`${inputClass} q-mt-md w-full`"
-    :color="color"
-    :bg-color="bgColor"
-    :error-message="errorMessage"
-    :error="errorMessage !== '' ?  true : false"
-  />
+  <q-input v-model="inputValue" :label="label" :type="type" :outlined="outlined" :standout="standout"
+    :class="`${inputClass} w-full`" :error-message="errorMessage" :error="errorMessage !== '' ? true : false" />
 </template>
 
 <script>
 export default {
-  name: 'BaseInput',
+  name: 'CustomInput',
   data() {
     return {
     }
@@ -32,6 +23,10 @@ export default {
       type: String,
       default: 'text',
     },
+    outlined: {
+      type: Boolean,
+      default: true,
+    },
     standout: {
       type: String,
       default: '',
@@ -43,14 +38,6 @@ export default {
     errorMessage: {
       type: String,
       default: ''
-    },
-    color: {
-      type: String,
-      default: 'primary'
-    },
-    bgColor: {
-      type: String,
-      default: 'primary'
     }
   },
   computed: {
