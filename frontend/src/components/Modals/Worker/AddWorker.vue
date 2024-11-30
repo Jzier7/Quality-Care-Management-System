@@ -113,7 +113,6 @@ export default {
       try {
         const response = await workerService.storeWorker({ ...this.localForm });
         this.workerPassword = response.data.body;
-        console.log(this.workerPassword)
 
         Notify.create({
           type: 'positive',
