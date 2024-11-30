@@ -27,12 +27,31 @@
       </q-form>
     </q-card>
   </q-dialog>
+
+  <!-- View Password Modal -->
+  <q-dialog v-model="showPasswordModal">
+    <q-card flat bordered class="q-pa-md text-black">
+      <h3 class="text-primary pb-4">Worker's Password</h3>
+      <div class="q-mb-md">
+        <p>Your created worker's password is:</p>
+        <q-input v-model="workerPassword" readonly>
+          <template v-slot:append>
+            <q-btn round dense flat icon="content_copy" @click="copyPassword" />
+          </template>
+        </q-input>
+        <p class="text-negative q-mt-md">Please take a note of this password. It will only be displayed once!</p>
+      </div>
+      <div class="row justify-end">
+        <q-btn label="Close" color="primary" @click="closePasswordModal" />
+      </div>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
 import { Notify } from 'quasar';
-import { useModalStore } from 'src/stores/modules/modalStore';
 import workerService from 'src/services/workerService';
+import { useModalStore } from 'src/stores/modules/modalStore';
 
 export default {
   props: {
@@ -57,36 +76,22 @@ export default {
       errors: {},
       modalStore: useModalStore(),
       departments: [
-        'Emergency',
-        'Cardiology',
-        'Orthopedics',
-        'Pediatrics',
-        'Radiology',
-        'OB-GYN',
-        'General Surgery',
-        'Internal Medicine',
-        'Neurology',
-        'Dermatology',
-        'Anesthesiology',
-        'Psychiatry',
-        'Oncology',
-        'Pulmonology',
-        'Endocrinology',
+        'Emergency', 'Cardiology', 'Orthopedics', 'Pediatrics', 'Radiology', 'OB-GYN', 'General Surgery',
+        'Internal Medicine', 'Neurology', 'Dermatology', 'Anesthesiology', 'Psychiatry', 'Oncology', 'Pulmonology', 'Endocrinology',
       ],
       positions: [
-        'Doctor',
-        'Nurse',
-        'Technician',
-        'Therapist',
-        'Medical Assistant',
-        'Administrative Staff',
-        'Maintenance Staff',
+        'Doctor', 'Nurse', 'Technician', 'Therapist', 'Medical Assistant', 'Administrative Staff', 'Maintenance Staff',
       ],
+      workerPassword: '',
+      showPasswordModal: false,
     };
   },
   methods: {
     closeModal() {
       this.modalStore.setShowAddWorkerModal(false);
+    },
+    closePasswordModal() {
+      this.showPasswordModal = false;
       this.clearForm();
     },
     clearForm() {
@@ -94,7 +99,7 @@ export default {
         first_name: '',
         middle_name: '',
         last_name: '',
-        licenseNumber: '',
+        license_number: '',
         email: '',
         department: '',
         position: '',
@@ -102,19 +107,24 @@ export default {
         shift_end_time: '',
       };
       this.errors = {};
+      this.workerPassword = '';
     },
     async addWorker() {
       try {
         const response = await workerService.storeWorker({ ...this.localForm });
+        this.workerPassword = response.data.body;
+        console.log(this.workerPassword)
 
         Notify.create({
           type: 'positive',
           position: 'top',
-          message: response.data.message,
+          message: 'Worker added successfully.',
         });
+
 
         this.fetchWorkers();
         this.closeModal();
+        this.showPasswordModal = true;
       } catch (error) {
         Notify.create({
           type: 'negative',
@@ -126,6 +136,23 @@ export default {
           this.errors = error.response.data.errors;
         }
       }
+    },
+    copyPassword() {
+      navigator.clipboard.writeText(this.workerPassword)
+        .then(() => {
+          Notify.create({
+            type: 'positive',
+            position: 'top',
+            message: 'Password copied to clipboard!',
+          });
+        })
+        .catch(() => {
+          Notify.create({
+            type: 'negative',
+            position: 'top',
+            message: 'Failed to copy password.',
+          });
+        });
     },
   },
 };

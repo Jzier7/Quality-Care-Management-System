@@ -5,7 +5,6 @@ export const useModalStore = defineStore('modal', {
     showAddWorkerModal: false,
     showEditWorkerModal: false,
     showDeleteWorkerModal: false,
-    showViewWorkerModal: false,
 
   }),
   actions: {
@@ -18,9 +17,6 @@ export const useModalStore = defineStore('modal', {
     },
     setShowDeleteWorkerModal(params) {
       this.showDeleteWorkerModal = params;
-    },
-    setShowViewWorkerModal(params) {
-      this.showViewWorkerModal = params;
     },
 
   },
