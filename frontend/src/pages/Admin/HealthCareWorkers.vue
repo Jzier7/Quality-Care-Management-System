@@ -1,125 +1,169 @@
 <template>
-  <q-page class="q-pa-md">
-    <q-toolbar class="q-pa-none py-4">
-      <q-toolbar-title>
-        <h1 class="text-dark text-3xl font-bold">HealthCare Workers</h1>
-      </q-toolbar-title>
-    </q-toolbar>
+  <q-page padding>
+    <!-- Toolbar Section -->
+    <div class="q-mb-md">
+      <q-toolbar class="q-pa-none">
+        <q-toolbar-title>
+          <h3 class="text-primary">Healthcare Workers</h3>
+        </q-toolbar-title>
+      </q-toolbar>
+    </div>
 
-    <q-toolbar class="q-pa-none justify-between items-center">
-      <q-input
-        outlined
-        dense
-        color='primary'
-        v-model="search"
-        placeholder="Search"
-        @input="filterRows"
-      >
-        <template v-slot:prepend>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+    <!-- Add Worker and Search Bar Section -->
+    <div class="row justify-between items-center">
+      <q-btn dense label="Add Worker" color="primary" @click="openAddWorkerModal" style="text-transform: capitalize;" />
+      <form @submit.prevent="filterWorkers" class="q-gutter-md">
+        <q-input rounded outlined dense v-model="search" placeholder="Search Workers" @input="filterWorkers"
+          color="primary">
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </form>
+    </div>
 
-      <q-btn
-        label="Add Worker"
-        color="primary"
-        @click="showAddWorkerDialog = true"
-      />
-    </q-toolbar>
+    <!-- Display Workers Section -->
+    <div class="q-mt-md">
+      <div v-if="workers.length === 0" class="row justify-center q-ma-lg">
+        <p class="text-h6 text-gray-600">No workers found.</p>
+      </div>
 
-    <q-list bordered class="rounded-borders mt-4">
-      <q-item-label header>Healthcare Workers</q-item-label>
+      <div class="q-gutter-sm">
+        <q-card v-for="worker in workers" :key="worker.id" flat bordered
+          class="q-pa-sm border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+          <q-card-section class="overflow-hidden">
+            <div class="row items-center q-gutter-sm">
+              <!-- Profile Picture -->
+              <div class="q-pa-md">
+                <q-img v-if="worker.user.profile_picture" :src="worker.user.profile_picture" alt="Worker Profile"
+                  class="rounded-full" style="width: 100px; height: 100px; object-fit: cover;" />
+                <q-icon v-else name="account_circle" size="100px" color="primary" class="rounded-full" />
+              </div>
 
-      <q-item
-        v-for="worker in filteredWorkers"
-        :key="worker.id"
-      >
-        <q-item-section avatar top>
-          <q-icon name="person" color="black" size="34px" />
-        </q-item-section>
+              <!-- Worker Information -->
+              <div>
+                <h2 class="font-bold text-primary text-h6">
+                  {{ worker.user.last_name }},
+                  {{ worker.user.first_name }}
+                  <span v-if="worker.user.middle_name" class="text-body1">{{ worker.user.middle_name }}</span>
+                </h2>
+                <p class="text-gray-500 text-body2"><strong>LICENSE NUMBER:</strong> {{ worker.license_number }}</p>
+                <p class="text-gray-500 text-body2"><strong>DEPARTMENT:</strong> {{ worker.department }}</p>
+                <p class="text-gray-500 text-body2">
+                  <strong>SHIFTING:</strong> {{ formatTime(worker.shift_start_time) }} - {{
+                    formatTime(worker.shift_end_time) }}
+                </p>
+                <p class="text-gray-500 text-body2"><strong>POSITION:</strong> {{ worker.position }}</p>
+              </div>
+            </div>
+          </q-card-section>
 
-        <q-item-section top>
-          <q-item-label lines="1">
-            <span class="text-weight-medium text-lg">{{ worker.name }}</span>
-          </q-item-label>
-          <q-item-label caption>
-            <div class="text-grey-7">LICENSE NUMBER: {{ worker.licenseNumber }}</div>
-            <div class="text-grey-7">DEPARTMENT: {{ worker.department }}</div>
-            <div class="text-grey-7">SHIFTING: {{ worker.shifting }}</div>
-            <div class="text-grey-7">POSITION: {{ worker.role }}</div>
-          </q-item-label>
-        </q-item-section>
+          <!-- Actions -->
+          <q-card-actions class="row justify-end">
+            <q-btn label="Edit" color="primary" @click="openEditWorkerModal(worker)" style="text-transform: capitalize;"
+              class="q-mr-md" />
+            <q-btn label="Delete" color="negative" style="text-transform: capitalize;"
+              @click="openDeleteWorkerModal(worker)" />
+          </q-card-actions>
+        </q-card>
+      </div>
+    </div>
 
-        <q-item-section top side>
-          <div class="text-grey-8 q-gutter-xs">
-            <q-btn size="12px" flat dense round icon="delete" @click="removeWorker(worker.id)" />
-            <q-btn size="12px" flat dense round icon="edit" />
-          </div>
-        </q-item-section>
-      </q-item>
+    <!-- Pagination Section -->
+    <div class="row justify-center q-mt-md">
+      <q-pagination v-model="currentPage" :max="lastPage" @update:model-value="updatePage" direction-links />
+    </div>
 
-    </q-list>
-
-    <!-- Add Worker Dialog -->
-    <q-dialog v-model="showAddWorkerDialog">
-      <q-card>
-        <q-card-section>
-          <q-form @submit="addWorker">
-            <q-input v-model="newWorker.name" label="Name" outlined dense />
-            <q-input v-model="newWorker.licenseNumber" label="License Number" outlined dense />
-            <q-input v-model="newWorker.department" label="Department" outlined dense />
-            <q-input v-model="newWorker.shifting" label="Shifting" outlined dense />
-            <q-input v-model="newWorker.role" label="Position" outlined dense />
-            <q-btn label="Add" type="submit" color="primary" />
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+    <!-- Modal Components -->
+    <AddWorkerModal :fetchWorkers="fetchWorkers" />
+    <EditWorkerModal :fetchWorkers="fetchWorkers" :editData="workerData" />
+    <DeleteWorkerModal :fetchWorkers="fetchWorkers" :deleteData="workerData" />
   </q-page>
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue';
+import { useModalStore } from 'src/stores/modules/modalStore';
+import workerService from 'src/services/workerService';
+
 export default {
+  components: {
+    AddWorkerModal: defineAsyncComponent(() => import('components/Modals/Worker/AddWorker.vue')),
+    EditWorkerModal: defineAsyncComponent(() => import('components/Modals/Worker/EditWorker.vue')),
+    DeleteWorkerModal: defineAsyncComponent(() => import('components/Modals/Worker/DeleteWorker.vue')),
+  },
   data() {
     return {
+      workers: [],
+      workerData: {},
       search: '',
-      showAddWorkerDialog: false,
-      newWorker: {
-        name: '',
-        licenseNumber: '',
-        department: '',
-        shifting: '',
-        role: '',
-      },
-      workers: [
-        { id: 1, name: 'Juan Dela Cruz', licenseNumber: '12-364-5862-6592-5992', department: 'OB GYNE', shifting: '8:00AM-5:00PM', role: 'Doctor' },
-        { id: 2, name: 'Jane Smith', licenseNumber: '12-364-5862-6592-5993', department: 'OB GYNE', shifting: '8:00AM-5:00PM', role: 'Nurse' },
-      ],
+      currentPage: 1,
+      pageSize: 5,
+      lastPage: 1,
+      total: 0,
     };
   },
-  computed: {
-    filteredWorkers() {
-      const searchLower = this.search.toLowerCase();
-      return this.workers.filter(worker =>
-        worker.name.toLowerCase().includes(searchLower) ||
-        worker.role.toLowerCase().includes(searchLower) ||
-        worker.department.toLowerCase().includes(searchLower)
-      );
+  watch: {
+    search() {
+      this.currentPage = 1;
+
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.fetchWorkers();
+      }, 1000);
     },
   },
   methods: {
-    addWorker() {
-      const newId = this.workers.length ? this.workers[this.workers.length - 1].id + 1 : 1;
-      this.workers.push({
-        id: newId,
-        ...this.newWorker,
-      });
-      this.newWorker = { name: '', licenseNumber: '', department: '', shifting: '', role: '' };
-      this.showAddWorkerDialog = false;
+    openAddWorkerModal() {
+      const modalStore = useModalStore();
+      modalStore.setShowAddWorkerModal(true);
     },
-    removeWorker(id) {
-      this.workers = this.workers.filter(worker => worker.id !== id);
+    openEditWorkerModal(editData) {
+      this.workerData = editData;
+      const modalStore = useModalStore();
+      modalStore.setShowEditWorkerModal(true);
     },
+    openDeleteWorkerModal(deleteData) {
+      this.workerData = deleteData;
+      const modalStore = useModalStore();
+      modalStore.setShowDeleteWorkerModal(true);
+    },
+    formatTime(time) {
+      const [hours, minutes, seconds] = time.split(':');
+
+      const date = new Date(1970, 0, 1, hours, minutes, seconds);
+
+      return new Intl.DateTimeFormat('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }).format(date);
+    },
+    updatePage(page) {
+      this.currentPage = page;
+      this.fetchWorkers();
+    },
+    filterWorkers() {
+      this.fetchWorkers();
+    },
+    async fetchWorkers() {
+      try {
+        const response = await workerService.getPaginatedWorkers({
+          page: this.currentPage,
+          pageSize: this.pageSize,
+          search: this.search,
+        });
+        this.workers = response.data.body;
+        this.total = response.data.details.total;
+        this.lastPage = Math.ceil(this.total / this.pageSize);
+      } catch (error) {
+        console.error('Error fetching workers:', error);
+      }
+    },
+  },
+  mounted() {
+    this.fetchWorkers();
   },
 };
 </script>

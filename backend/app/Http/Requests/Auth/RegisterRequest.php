@@ -22,10 +22,14 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required',
-            'middle_name' => 'nullable',
-            'last_name' => 'required',
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'unique:users,email'],
+            'birthdate' => ['required', 'date', 'before:today'],
+            'address' => ['required', 'string', 'max:255'],
+            'emergency_contact' => ['required', 'string', 'max:255'],
+            'sex' => ['required', 'string', 'in:male,female'],
             'password' => ['required', 'min:8'],
             'confirm_password' => ['required', 'same:password'],
         ];
@@ -40,6 +44,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             'confirm_password.same' => 'Password does not match.',
+            'sex.in' => 'Gender must be one of the following: male, female',
+            'birthdate.before' => 'Birthdate must be a past date.',
         ];
     }
 }

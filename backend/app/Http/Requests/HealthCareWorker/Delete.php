@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\HealthCareWorker;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateStatus extends FormRequest
+class Delete extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class UpdateStatus extends FormRequest
     {
         $user = Auth::user();
 
-        if ($user && $user->isSuperAdmin()) {
+        if ($user && $user->isAdmin()) {
             return true;
         }
 
@@ -30,15 +30,13 @@ class UpdateStatus extends FormRequest
     {
         return [
             'id' => ['required', 'integer', 'exists:users,id'],
-            'status' => ['nullable', 'string'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.exists' => 'User does not exist.',
+            'id.exists' => 'Healthcare Worker does not exist.',
         ];
     }
 }
-

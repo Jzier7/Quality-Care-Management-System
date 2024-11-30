@@ -6,6 +6,7 @@ use App\Classes\JsonResponseFormat;
 use App\Models\File;
 use App\Models\User;
 use App\Services\FileUploadService;
+use App\Models\Patient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +26,7 @@ class AuthRepository extends JsonResponseFormat
             ];
         }
 
-        $user = User::with(['files', 'role.abilities.route'])->find(Auth::id());
+        $user = User::with(['role.abilities.route'])->find(Auth::id());
 
         return [
             'message' => 'Login successful',
@@ -61,7 +62,15 @@ class AuthRepository extends JsonResponseFormat
 
             $user = User::create($data);
 
-            Auth::login($user->load(['role.abilities.route']));
+            $patientData = [
+                'user_id' => $user->id,
+                'birthdate' => $data['birthdate'] ?? null,
+                'address' => $data['address'] ?? null,
+                'emergency_contact' => $data['emergency_contact'] ?? null,
+                'sex' => $data['sex'] ?? null
+            ];
+
+            Patient::create($patientData);
 
             DB::commit();
             return [

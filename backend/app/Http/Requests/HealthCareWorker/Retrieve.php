@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\HealthCareWorker;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class RetrieveAdmins extends FormRequest
+class Retrieve extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-
         $user = Auth::user();
 
-        if ($user && $user->isSuperAdmin()) {
+        if ($user && $user->isAdmin()) {
             return true;
         }
 
@@ -37,4 +36,3 @@ class RetrieveAdmins extends FormRequest
         ];
     }
 }
-

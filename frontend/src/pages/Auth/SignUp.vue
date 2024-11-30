@@ -17,19 +17,27 @@
                 <img src="~/assets/logo.png" alt="Logo" />
               </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-full q-pt-md">
+              <div class="grid grid-cols-1 md:grid-cols-8 gap-2 w-full q-pt-md">
+                <BaseInput v-model="form.last_name" label="Last Name" type="text" color="primary" bgColor="white"
+                  inputClass="col-span-2 md:col-span-3" />
                 <BaseInput v-model="form.first_name" label="First Name" type="text" color="primary" bgColor="white"
-                  inputClass="col-span-2 md:col-span-2" />
+                  inputClass="col-span-2 md:col-span-3" />
                 <BaseInput v-model="form.middle_name" label="Middle Name" type="text" color="primary" bgColor="white"
                   inputClass="col-span-2 md:col-span-2" />
-                <BaseInput v-model="form.last_name" label="Last Name" type="text" color="primary" bgColor="white"
+                <BaseInput v-model="form.address" label="Address" type="text" color="primary" bgColor="white"
+                  inputClass="col-span-2 md:col-span-6" />
+                <BaseInput v-model="form.birthdate" label="Birthdate" type="date" color="primary" bgColor="white"
                   inputClass="col-span-2 md:col-span-2" />
+                <BaseInput v-model="form.emergency_contact" label="Emergency Contact" type="text" color="primary"
+                  bgColor="white" inputClass="col-span-2 md:col-span-6" />
+                <BaseSelect v-model="form.sex" label="Sex" type="select" :options="sexOptions" color="primary"
+                  bgColor="white" inputClass="col-span-2 md:col-span-2" />
                 <BaseInput v-model="form.email" label="Email" type="email" color="primary" bgColor="white"
-                  inputClass="col-span-2 md:col-span-2" />
+                  inputClass="col-span-2 md:col-span-8" />
                 <BaseInput v-model="form.password" label="Password" type="password" color="primary" bgColor="white"
-                  inputClass="col-span-2 md:col-span-1" />
+                  inputClass="col-span-2 md:col-span-4" />
                 <BaseInput v-model="form.confirm_password" label="Confirm Password" type="password" color="primary"
-                  bgColor="white" inputClass="col-span-2 md:col-span-1" />
+                  bgColor="white" inputClass="col-span-2 md:col-span-4" />
               </div>
 
               <BaseButton label="Sign Up" type="submit" color="white" textColor="grey" class="q-mt-lg" />
@@ -58,6 +66,7 @@ export default {
   components: {
     BaseButton: defineAsyncComponent(() => import('components/Widgets/BaseButton.vue')),
     BaseInput: defineAsyncComponent(() => import('components/Widgets/BaseInput.vue')),
+    BaseSelect: defineAsyncComponent(() => import('components/Widgets/BaseSelect.vue')),
   },
   data() {
     return {
@@ -68,13 +77,26 @@ export default {
         email: '',
         password: '',
         confirm_password: '',
+        birthdate: '',
+        address: '',
+        emergency_contact: '',
+        sex: '',
       },
+      sexOptions: [
+        { label: 'Male', value: 'male' },
+        { label: 'Female', value: 'female' }
+      ]
     };
   },
   methods: {
     async onSubmit() {
       try {
-        const response = await authService.register(this.form);
+        const formToSubmit = {
+          ...this.form,
+          sex: this.form.sex.value,
+        };
+
+        const response = await authService.register(formToSubmit);
 
         Notify.create({
           type: 'positive',
@@ -100,7 +122,7 @@ export default {
 
 <style lang="scss" scoped>
 .signup-container {
-  max-width: 1200px !important;
+  max-width: 1700px !important;
 }
 
 .text-container {
@@ -108,7 +130,7 @@ export default {
 }
 
 .form-container {
-  max-width: 700px;
+  max-width: 1500px;
   width: 100%;
   background-color: #004f97;
 }

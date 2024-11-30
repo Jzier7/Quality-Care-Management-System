@@ -30,63 +30,30 @@ class SyncUserAbilities extends Command
 
         DB::table('abilities')->truncate();
 
-        $superAdminRoleId = 1;
-        $adminRoleId = 2;
-        $userRoleId = 3;
-        $guestRoleId = 4;
+        // Define role IDs
+        $adminRoleId = 1;
+        $healthcareWorkerRoleId = 2;
+        $patientRoleId = 3;
 
+        // Define route IDs
         $allRouteIds = DB::table('routes')->pluck('id')->toArray();
 
-        $adminRouteIds = array_diff($allRouteIds, [6, 12]);
+        // Define specific route IDs for each role
+        $adminRouteIds = $allRouteIds; // Admin has access to all routes
 
-        $userRouteIds = [
+        $healthcareWorkerRouteIds = [
             1,
             2,
             8,
             11,
-            19,
-            25,
-            29,
-            38,
-            45,
-            59,
-            60,
-            61,
-            62,
-            63,
-            64,
-            65,
-            66,
-            67,
-            68,
-            69,
-            70,
         ];
 
-        $guestRouteIds = [
+        $patientRouteIds = [
             1,
             2,
             8,
             11,
-            19,
-            25,
-            29,
-            38,
-            45,
-            62,
-            66,
-            68
         ];
-
-        // Syncing abilities for Super Admin
-        foreach ($allRouteIds as $routeId) {
-            DB::table('abilities')->insert([
-                'role_id' => $superAdminRoleId,
-                'route_id' => $routeId,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
 
         // Syncing abilities for Admin
         foreach ($adminRouteIds as $routeId) {
@@ -98,20 +65,20 @@ class SyncUserAbilities extends Command
             ]);
         }
 
-        // Syncing abilities for User
-        foreach ($userRouteIds as $routeId) {
+        // Syncing abilities for Healthcare Worker
+        foreach ($healthcareWorkerRouteIds as $routeId) {
             DB::table('abilities')->insert([
-                'role_id' => $userRoleId,
+                'role_id' => $healthcareWorkerRoleId,
                 'route_id' => $routeId,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
         }
 
-        // Syncing abilities for Guest
-        foreach ($guestRouteIds as $routeId) {
+        // Syncing abilities for Patient
+        foreach ($patientRouteIds as $routeId) {
             DB::table('abilities')->insert([
-                'role_id' => $guestRoleId,
+                'role_id' => $patientRoleId,
                 'route_id' => $routeId,
                 'created_at' => now(),
                 'updated_at' => now()
@@ -121,4 +88,3 @@ class SyncUserAbilities extends Command
         $this->info('User abilities synced successfully!');
     }
 }
-

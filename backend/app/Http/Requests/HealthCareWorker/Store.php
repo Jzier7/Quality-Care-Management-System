@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\HealthCareWorker;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +14,7 @@ class Store extends FormRequest
     {
         $user = Auth::user();
 
-        if ($user && $user->isSuperAdmin()) {
+        if ($user && $user->isAdmin()) {
             return true;
         }
 
@@ -32,21 +32,25 @@ class Store extends FormRequest
             'first_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'unique:users,email'],
-            'birthdate' => ['required', 'date', 'before:today'],
-            'gender' => ['required', 'string', 'in:Male,Female'],
-            'purok' => ['required'],
-            'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $this->id],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'license_number' => ['required', 'string', 'max:255'],
+            'department' => ['required', 'string', 'max:255'],
+            'shift_start_time' => [
+                'required',
+                'regex:/^([01]?[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?$/',
+            ],
+            'shift_end_time' => [
+                'required',
+                'regex:/^([01]?[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?$/',
+            ],
+            'position' => ['required', 'string', 'max:255'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'birthdate.date' => 'Birthdate must be a valid date.',
-            'gender.in' => 'Gender must be one of the following: Male, Female',
-            'username.unique' => 'Username has already been taken.',
+            'id.exists' => 'User does not exist.',
         ];
     }
 }
-

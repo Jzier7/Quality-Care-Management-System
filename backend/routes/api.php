@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HealthCareWorkerController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
@@ -26,13 +27,23 @@ Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
         Route::patch('update', [AbilityController::class, 'update']);
     });
 
-    //FOR USER REGSITRY, ADMIN AND USER ACCOUNTS PAGE
     Route::prefix('users')->group(function () {
         Route::post('store/admin', [UserController::class, 'store']);
         Route::delete('delete', [UserController::class, 'delete']);
 
         Route::prefix('update')->group(function () {
             Route::patch('data', [UserController::class, 'updateData']);
+        });
+    });
+
+    Route::prefix('worker')->group(function () {
+        Route::post('store', [HealthCareWorkerController::class, 'store']);
+        Route::patch('update', [HealthCareWorkerController::class, 'update']);
+        Route::delete('delete', [HealthCareWorkerController::class, 'delete']);
+
+        Route::prefix('retrieve')->group(function () {
+            Route::get('all', [HealthCareWorkerController::class, 'retrieveAll']);
+            Route::get('paginated', [HealthCareWorkerController::class, 'retrievePaginate']);
         });
     });
 });
