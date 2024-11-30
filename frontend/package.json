@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A Quasar Project",
   "productName": "Quality Care Management System",
-  "author": "Jhuvizier Yamaguchi <tech18@sumomedia.co>",
+  "author": "tech",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
