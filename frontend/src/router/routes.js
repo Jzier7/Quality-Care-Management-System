@@ -24,6 +24,7 @@ const routes = [
     meta: { middlewares: [admin] },
     children: [
       { path: 'healthcare-workers', component: () => import('pages/Admin/HealthCareWorkers.vue') },
+      { path: 'patients', component: () => import('src/pages/Admin/PatientInformations/IndexPage.vue') },
       { path: 'information-board', component: () => import('pages/Admin/InformationBoard.vue') },
       { path: 'emergency-contact', component: () => import('pages/Admin/EmergencyContact.vue') },
     ]

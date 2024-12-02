@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\HealthCareWorker;
+namespace App\Http\Requests\Patient;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +14,7 @@ class Retrieve extends FormRequest
     {
         $user = Auth::user();
 
-        return $user && $user->isAdmin();
+        return $user && $user->isAdmin() || $user->isWorker();
     }
 
     /**

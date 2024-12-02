@@ -22,6 +22,12 @@ const menuList = [
     separator: false
   },
   {
+    icon: 'person',
+    label: 'Patients',
+    path: '/admin/patients',
+    separator: false
+  },
+  {
     icon: 'announcement',
     label: 'Information Board',
     path: '/admin/information-board',

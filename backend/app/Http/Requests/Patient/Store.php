@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\HealthCareWorker;
+namespace App\Http\Requests\Patient;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +14,7 @@ class Store extends FormRequest
     {
         $user = Auth::user();
 
-        return $user && $user->isAdmin();
+        return $user && $user->isAdmin() || $user->isWorker();
     }
 
     /**
@@ -29,17 +29,17 @@ class Store extends FormRequest
             'middle_name' => ['nullable', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'license_number' => ['required', 'string', 'max:255'],
-            'department' => ['required', 'string', 'max:255'],
-            'shift_start_time' => [
-                'required',
-                'regex:/^([01]?[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?$/',
-            ],
-            'shift_end_time' => [
-                'required',
-                'regex:/^([01]?[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?$/',
-            ],
-            'position' => ['required', 'string', 'max:255'],
+            'birthdate' => ['required', 'date', 'before:today'],
+            'address' => ['required', 'string'],
+            'emergency_contact' => ['required', 'string', 'regex:/^(?:\+639|09)\d{9}$/'],
+            'sex' => ['required', 'in:male,female'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'emergency_contact.regex' => 'Emergency contact must be a valid Philippine phone number (e.g., +639123456789 or 09123456789).'
         ];
     }
 }

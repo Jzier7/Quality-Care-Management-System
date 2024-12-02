@@ -6,6 +6,10 @@ export const useModalStore = defineStore('modal', {
     showEditWorkerModal: false,
     showDeleteWorkerModal: false,
 
+    showAddPatientModal: false,
+    showEditPatientModal: false,
+    showDeletePatientModal: false,
+
   }),
   actions: {
 
@@ -17,6 +21,16 @@ export const useModalStore = defineStore('modal', {
     },
     setShowDeleteWorkerModal(params) {
       this.showDeleteWorkerModal = params;
+    },
+
+    setShowAddPatientModal(params) {
+      this.showAddPatientModal = params;
+    },
+    setShowEditPatientModal(params) {
+      this.showEditPatientModal = params;
+    },
+    setShowDeletePatientModal(params) {
+      this.showDeletePatientModal = params;
     },
 
   },

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\HealthCareWorker;
+namespace App\Http\Requests\Patient;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class Retrieve extends FormRequest
+class Delete extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class Retrieve extends FormRequest
     {
         $user = Auth::user();
 
-        return $user && $user->isAdmin();
+        return $user && $user->isAdmin() || $user->isWorker();
     }
 
     /**
@@ -25,10 +25,14 @@ class Retrieve extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['nullable', 'string', 'max:255'],
-            'currentPage' => ['nullable', 'integer', 'min:1'],
-            'pageSize' => ['nullable', 'integer', 'min:1', 'max:100'],
-            'orderBy' => ['nullable', 'string', 'max:255'],
+            'id' => ['required', 'integer', 'exists:users,id'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'id.exists' => 'Patient does not exist.',
         ];
     }
 }

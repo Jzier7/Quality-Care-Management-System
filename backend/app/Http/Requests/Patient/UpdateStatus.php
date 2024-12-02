@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\HealthCareWorker;
+namespace App\Http\Requests\Patient;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class Delete extends FormRequest
+class UpdateStatus extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class Delete extends FormRequest
     {
         $user = Auth::user();
 
-        return $user && $user->isAdmin();
+        return $user && $user->isAdmin() || $user->isWorker();
     }
 
     /**
@@ -25,14 +25,21 @@ class Delete extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'exists:users,id'],
+            'id' => ['required', 'integer', 'exists:patients,id'],
+            'status' => ['required', 'boolean'],
         ];
     }
 
+    /**
+     * Get custom messages for validation errors.
+     *
+     * @return array
+     */
     public function messages(): array
     {
         return [
-            'id.exists' => 'Healthcare Worker does not exist.',
+            'id.exists' => 'Patient does not exist.',
+            'emergency_contact.regex' => 'Emergency contact must be a valid Philippine phone number (e.g., +639123456789 or 09123456789).'
         ];
     }
 }
