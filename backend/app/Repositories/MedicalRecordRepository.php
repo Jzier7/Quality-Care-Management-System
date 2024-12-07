@@ -20,7 +20,7 @@ class MedicalRecordRepository extends JsonResponseFormat
      */
     public function retrievePaginate(array $params): array
     {
-        $query = MedicalRecord::query();
+        $query = MedicalRecord::with(['healthcare_worker.user', 'patient.user']);
 
         $query->where('patient_id', $params['patient']);
 
@@ -60,14 +60,30 @@ class MedicalRecordRepository extends JsonResponseFormat
      */
     public function retrieveAll(): array
     {
-        $records = MedicalRecord::select('id', 'name')
-            ->with('files')
-            ->get();
+        $records = MedicalRecord::select('id', 'name')->get();
 
         return [
             'message' => 'All medical records retrieved successfully',
             'body' => $records,
             'total' => $records->count(),
+        ];
+    }
+
+    /**
+     * Get the latest medical record with healthcare worker and patient details
+     *
+     * @return array
+     */
+    public function retrieve(int $id): array
+    {
+        $record = MedicalRecord::with('healthcare_worker.user', 'patient.user')
+            ->where('patient_id', $id)
+            ->latest()
+            ->first();
+
+        return [
+            'message' => 'Latest medical record retrieved successfully',
+            'body' => $record ? [$record] : [],
         ];
     }
 

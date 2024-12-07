@@ -49,6 +49,22 @@ class MedicalRecordController extends Controller
     }
 
     /**
+     * Retrieves medical Records.
+     *
+     * @return Illuminate\Http\JsonResponse The medical record data in JSON format.
+     */
+    public function retrieve(): JsonResponse
+    {
+        $user = auth()->user();
+        $patient = $user->patient;
+
+        $id = $patient->id;
+
+        $response = $this->medicalRecordRepository->retrieve($id);
+        return $this->medicalRecordRepository->getJsonResponse($response);
+    }
+
+    /**
      * Add a medicalRecord.
      *
      * @return Illuminate\Http\JsonResponse The user's data in JSON format.

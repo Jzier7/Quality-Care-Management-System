@@ -19,7 +19,7 @@ class UserRepository extends JsonResponseFormat
      */
     public function me(): array
     {
-        $user = User::with(['role.abilities.route'])->find(Auth::id());
+        $user = User::with(['role.abilities.route', 'patient'])->find(Auth::id());
 
         if ($user) {
             return [

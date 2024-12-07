@@ -49,7 +49,7 @@ const routes = [
       { path: 'medical-records', component: () => import('pages/Patient/MedicalRecords.vue') },
       { path: 'healthcare-workers', component: () => import('pages/Patient/HealthCareWorkers.vue') },
       { path: 'schedule-checkup', component: () => import('pages/Patient/ScheduleCheckUp.vue') },
-      { path: 'information-board', component: () => import('pages/Patient/InformationBoard.vue') },
+      { path: 'information-board', component: () => import('pages/HealthCareWorker/InformationBoard.vue') },
       { path: 'emergency-contact', component: () => import('pages/Patient/EmergencyContact.vue') },
     ]
   },

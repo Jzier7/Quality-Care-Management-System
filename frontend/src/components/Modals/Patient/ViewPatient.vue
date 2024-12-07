@@ -29,21 +29,53 @@
 
             <!-- List of Existing Records -->
             <div v-if="records && records.length">
-              <div v-for="record in records" :key="record.id" class="scrollable-records">
-                <q-card bordered class="q-pa-md q-my-md">
-                  <ul class="text-dark">
-                    <li>
-                      <p><strong>Serial Number:</strong> {{ record.serial_number }}</p>
-                      <p><strong>Date:</strong> {{ formatDate(record.date, ' MMM D YYYY') }}</p>
-                      <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
-                      <p><strong>Prescriptions:</strong></p>
-                      <div v-html="record.prescriptions"></div>
-                      <div v-if="isWorker" class="row justify-end">
-                        <q-btn flat color="negative" icon="delete" @click="openDeleteRecordModal(record)"
-                          label="Delete" />
+              <div v-for="record in records" :key="record.id">
+                <q-card flat bordered class="w-full shadow-lg q-mt-md">
+                  <q-card-section class="text-center">
+                    <div>
+                      <h2 class="text-dark text-3xl font-bold">{{ record.healthcare_worker.user.first_name }} {{
+                        record.healthcare_worker.user.last_name }}</h2>
+                      <p class="text-dark text-xl">{{ record.healthcare_worker.position }}</p>
+                      <p class="text-dark text-base">{{ record.serial_number }}</p>
+                    </div>
+
+                    <div class="form-fields mt-8 space-y-6">
+                      <div class="form-row flex justify-between text-lg">
+                        <span class="font-semibold text-dark">Patient's Name:</span>
+                        <span class="text-dark">{{ record.patient.user.first_name }} {{ record.patient.user.last_name
+                          }}</span>
                       </div>
-                    </li>
-                  </ul>
+                      <div class="form-row flex justify-between text-lg">
+                        <span class="font-semibold text-dark">Date of Birth:</span>
+                        <span class="text-dark">{{ formatDate(record.patient.birthdate, 'MMM D YYYY') }}</span>
+                      </div>
+                      <div class="form-row flex justify-between text-lg">
+                        <span class="font-semibold text-dark">Gender:</span>
+                        <span class="text-dark">{{ record.patient.sex }}</span>
+                      </div>
+                      <div class="form-row flex justify-between text-lg">
+                        <span class="font-semibold text-dark">Date:</span>
+                        <span class="text-dark">{{ formatDate(record.date, 'MMM D YYYY') }}</span>
+                      </div>
+                      <div class="form-row flex justify-between text-lg">
+                        <span class="font-semibold text-dark">Diagnosis:</span>
+                        <span class="text-dark">{{ record.diagnosis }}</span>
+                      </div>
+                      <div class="form-row flex justify-between text-lg">
+                        <span class="font-semibold text-dark">Rx:</span>
+                        <span class="text-dark" v-html="record.prescriptions"></span>
+                      </div>
+                    </div>
+
+                    <q-card-section class="text-dark text-lg italic mt-10">
+                      Doctor's Signature
+                    </q-card-section>
+
+                    <div v-if="isWorker" class="row justify-end mt-6">
+                      <q-btn flat color="negative" icon="delete" @click="openDeleteRecordModal(record)"
+                        label="Delete" />
+                    </div>
+                  </q-card-section>
                 </q-card>
               </div>
 

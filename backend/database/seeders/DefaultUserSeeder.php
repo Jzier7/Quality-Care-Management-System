@@ -30,11 +30,11 @@ class DefaultUserSeeder extends Seeder
 
         HealthCareWorker::create([
             'user_id' => $worker->id,
-            'license_number' => $faker->unique()->word(),
-            'department' => $faker->word(),
+            'license_number' => '12312-3424-123',
+            'department' => 'OB-GYN',
             'shift_start_time' => now()->toTimeString(),
             'shift_end_time' => now()->addHours(8)->toTimeString(),
-            'position' => $faker->word(),
+            'position' => 'Doctor',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -45,7 +45,7 @@ class DefaultUserSeeder extends Seeder
             'last_name' => 'User',
             'email' => 'patient@patient.com',
             'password' => Hash::make('password'),
-            'role_id' => 3, // Assuming 3 represents 'patient'
+            'role_id' => 3,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -57,7 +57,6 @@ class DefaultUserSeeder extends Seeder
             'address' => $faker->address(),
             'emergency_contact' => $faker->phoneNumber(),
             'sex' => $faker->randomElement(['male', 'female']),
-            'status' => 'active', // Assuming status can be 'active'
             'created_at' => now(),
             'updated_at' => now(),
         ]);

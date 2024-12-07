@@ -6,28 +6,22 @@
       </q-toolbar-title>
     </q-toolbar>
 
-    <q-card flat bordered class="bg-white p-8 w-full max-w-screen-xl mt-6">
+    <q-card flat bordered class="bg-white p-8 w-full max-w-screen-xl mt-6" v-if="firstRecord">
       <q-card-section class="flex justify-center mb-6">
-        <img src="https://via.placeholder.com/150" alt="Healthcare Worker Picture" class="rounded-full w-36 h-36"/>
+        <img :src="placeholderImage" alt="Healthcare Worker Picture" class="rounded-full w-36 h-36" />
       </q-card-section>
 
       <q-card-section class="text-center text-dark">
-        <h2 class="text-dark text-2xl font-bold mb-2">Dr. Jane Smith</h2>
-        <p class="text-dark text-lg mb-2">Specialization: Cardiology</p>
-        <p class="text-dark text-lg mb-4">Hospital ID: 987654321</p>
+        <h2 class="text-dark text-2xl font-bold mb-2">
+          {{ firstRecord.healthcare_worker?.user?.first_name }} {{ firstRecord.healthcare_worker?.user?.last_name }}
+        </h2>
+        <p class="text-dark text-lg mb-2">Specialization: {{ firstRecord.healthcare_worker?.position }}</p>
+        <p class="text-dark text-lg mb-4">License #: {{ firstRecord.healthcare_worker?.license_number }}</p>
 
         <div class="space-y-4">
           <div class="flex justify-between text-lg">
-            <span class="font-semibold text-dark">Experience:</span>
-            <span class="text-dark">10 years</span>
-          </div>
-          <div class="flex justify-between text-lg">
-            <span class="font-semibold text-dark">Contact:</span>
-            <span class="text-dark">(123) 456-7890</span>
-          </div>
-          <div class="flex justify-between text-lg">
             <span class="font-semibold text-dark">Email:</span>
-            <span class="text-dark">janesmith@hospital.com</span>
+            <span class="text-dark">{{ firstRecord.healthcare_worker?.user?.email || 'N/A' }}</span>
           </div>
           <div class="flex justify-between text-lg">
             <span class="font-semibold text-dark">Location:</span>
@@ -40,8 +34,33 @@
 </template>
 
 <script>
+import medicalRecordService from 'src/services/medicalRecordService';
+
 export default {
   name: 'HealthCareWorker',
+  data() {
+    return {
+      records: [],
+      placeholderImage: 'https://via.placeholder.com/150',
+    };
+  },
+  computed: {
+    firstRecord() {
+      return this.records.length > 0 ? this.records[0] : null;
+    },
+  },
+  mounted() {
+    this.fetchRecords();
+  },
+  methods: {
+    async fetchRecords() {
+      try {
+        const response = await medicalRecordService.getMedicalRecords();
+        this.records = response.data.body;
+      } catch (error) {
+        console.error('Error fetching records:', error);
+      }
+    },
+  },
 };
 </script>
-

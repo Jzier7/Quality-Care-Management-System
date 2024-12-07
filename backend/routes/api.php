@@ -88,6 +88,7 @@ Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
         Route::delete('delete', [MedicalRecordController::class, 'delete']);
 
         Route::prefix('retrieve')->group(function () {
+            Route::get('', [MedicalRecordController::class, 'retrieve']);
             Route::get('all', [MedicalRecordController::class, 'retrieveAll']);
             Route::get('paginated', [MedicalRecordController::class, 'retrievePaginate']);
         });

@@ -66,6 +66,7 @@ class SyncUserAbilities extends Command
             11,
             22,
             26,
+            30
         ];
 
         // Syncing abilities for Admin

@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     public function patient(): HasOne
     {
-        return $this->hasOne(HealthCareWorker::class);
+        return $this->hasOne(Patient::class);
     }
 
     public function isAdmin(): bool
@@ -71,5 +71,10 @@ class User extends Authenticatable
     public function isWorker(): bool
     {
         return $this->role_id === 2;
+    }
+
+    public function isPatient(): bool
+    {
+        return $this->role_id === 3;
     }
 }

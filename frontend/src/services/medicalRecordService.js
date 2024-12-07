@@ -11,6 +11,11 @@ const medicalRecordService = {
     return response;
   },
 
+  async getMedicalRecords() {
+    const response = await api.get('/api/medicalRecord/retrieve');
+    return response;
+  },
+
   async storeMedicalRecord(data) {
     const response = await api.post('/api/medicalRecord/store', data );
     return response;

@@ -12,9 +12,7 @@ class Retrieve extends FormRequest
      */
     public function authorize(): bool
     {
-        $user = Auth::user();
-
-        return $user && $user->isAdmin() || $user->isWorker();
+        return true;
     }
 
     /**
@@ -29,7 +27,7 @@ class Retrieve extends FormRequest
             'currentPage' => ['nullable', 'integer', 'min:1'],
             'pageSize' => ['nullable', 'integer', 'min:1', 'max:100'],
             'orderBy' => ['nullable', 'string', 'max:255'],
-            'patient' => ['required', 'integer', 'exists:patients,id']
+            'patient' => ['nullable', 'integer', 'exists:patients,id']
         ];
     }
 }
