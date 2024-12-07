@@ -29,6 +29,7 @@ class Retrieve extends FormRequest
             'currentPage' => ['nullable', 'integer', 'min:1'],
             'pageSize' => ['nullable', 'integer', 'min:1', 'max:100'],
             'orderBy' => ['nullable', 'string', 'max:255'],
+            'patient' => ['required', 'integer', 'exists:patients,id']
         ];
     }
 }

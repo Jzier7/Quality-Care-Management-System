@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\InformationBoard;
+namespace App\Http\Requests\MedicalRecord;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +14,7 @@ class Store extends FormRequest
     {
         $user = Auth::user();
 
-        return $user && ($user->isAdmin() || $user->isWorker());
+        return $user && $user->isWorker();
     }
 
     /**
@@ -25,8 +25,7 @@ class Store extends FormRequest
     public function rules(): array
     {
         return [
-            'patient_id' => ['required', 'exists:patients,id'],
-            'healthcare_worker_id' => ['required', 'exists:healthcare_workers,id'],
+            'patient_id' => ['nullable', 'exists:patients,id'],
             'serial_number' => ['required', 'string', 'max:255'],
             'date' => ['required', 'date'],
             'diagnosis' => ['required', 'string', 'max:255'],
@@ -43,7 +42,6 @@ class Store extends FormRequest
     {
         return [
             'patient_id.exists' => 'The selected patient does not exist.',
-            'healthcare_worker_id.exists' => 'The selected healthcare worker does not exist.',
             'date.date' => 'Please provide a valid date.',
         ];
     }

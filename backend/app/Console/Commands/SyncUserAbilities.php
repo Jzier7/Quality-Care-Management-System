@@ -39,7 +39,7 @@ class SyncUserAbilities extends Command
         $allRouteIds = DB::table('routes')->pluck('id')->toArray();
 
         // Define specific route IDs for each role
-        $adminRouteIds = $allRouteIds; // Admin has access to all routes
+        $adminRouteIds = array_diff($allRouteIds, [28, 29]);
 
         $healthcareWorkerRouteIds = [
             1,
@@ -53,6 +53,10 @@ class SyncUserAbilities extends Command
             18,
             19,
             22,
+            28,
+            29,
+            30,
+            31
         ];
 
         $patientRouteIds = [
@@ -61,7 +65,7 @@ class SyncUserAbilities extends Command
             8,
             11,
             22,
-            26
+            26,
         ];
 
         // Syncing abilities for Admin

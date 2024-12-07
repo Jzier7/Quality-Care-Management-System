@@ -20,15 +20,18 @@ class MedicalRecordRepository extends JsonResponseFormat
      */
     public function retrievePaginate(array $params): array
     {
-        $query = MedicalRecord::with(['files']);
+        $query = MedicalRecord::query();
+
+        $query->where('patient_id', $params['patient']);
 
         if (!empty($params['search'])) {
-            $query->where('name', 'like', '%' . $params['search'] . '%');
+            $query->where('serial_number', 'like', '%' . $params['search'] . '%');
         }
 
         if (!empty($params['orderBy'])) {
             $query->orderBy('updated_at', $params['orderBy']);
         }
+
 
         $currentPage = $params['currentPage'] ?? 1;
         $pageSize = $params['pageSize'] ?? 10;
@@ -69,7 +72,7 @@ class MedicalRecordRepository extends JsonResponseFormat
     }
 
     /**
-     * Store a new medicalRecord.
+     * Add a patient.
      *
      * @param array $data
      * @return array
@@ -78,36 +81,20 @@ class MedicalRecordRepository extends JsonResponseFormat
     {
         DB::beginTransaction();
         try {
-            $file = $data['file'] ?? null;
-            unset($data['file']);
 
             $medicalRecord = MedicalRecord::create($data);
 
-            if ($file) {
-                $fileUploadService = new FileUploadService();
-
-                $file_size = $fileUploadService->getFileSize($file);
-                $file_path = $fileUploadService->upload($file, 'medicalRecords');
-                $file_name = $file->getClientOriginalName();
-
-                $new_file = new File();
-                $new_file->path = $file_path;
-                $new_file->size = $file_size;
-                $new_file->name = $file_name;
-
-                $medicalRecord->files()->save($new_file);
-            }
-
             DB::commit();
+
             return [
-                'message' => 'medical record created successfully',
+                'message' => 'Medical Record added successfully',
                 'body' => $medicalRecord,
             ];
         } catch (\Exception $e) {
             DB::rollBack();
             return [
                 'error' => $e->getMessage(),
-                'status' => 500
+                'status' => 500,
             ];
         }
     }

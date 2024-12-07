@@ -9,6 +9,7 @@ use App\Http\Controllers\HealthCareWorkerController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\InformationBoardController;
 use App\Http\Controllers\EmergencyContactController;
+use App\Http\Controllers\MedicalRecordController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
@@ -79,6 +80,16 @@ Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
         Route::prefix('retrieve')->group(function () {
             Route::get('all', [EmergencyContactController::class, 'retrieveAll']);
             Route::get('paginated', [EmergencyContactController::class, 'retrievePaginate']);
+        });
+    });
+
+    Route::prefix('medicalRecord')->group(function () {
+        Route::post('store', [MedicalRecordController::class, 'store']);
+        Route::delete('delete', [MedicalRecordController::class, 'delete']);
+
+        Route::prefix('retrieve')->group(function () {
+            Route::get('all', [MedicalRecordController::class, 'retrieveAll']);
+            Route::get('paginated', [MedicalRecordController::class, 'retrievePaginate']);
         });
     });
 });

@@ -14,7 +14,7 @@ class Delete extends FormRequest
     {
         $user = Auth::user();
 
-        return $user && $user->isAdmin() || $user->isWorker();
+        return $user && $user->isWorker();
     }
 
     /**

@@ -30,6 +30,7 @@ class MedicalRecordController extends Controller
             'search' => $request->input('search'),
             'currentPage' => $request->input('page', 1),
             'pageSize' => $request->input('pageSize', 10),
+            'patient' => $request->input('patient')
         ];
 
         $response = $this->medicalRecordRepository->retrievePaginate($params);
@@ -56,6 +57,10 @@ class MedicalRecordController extends Controller
     {
 
         $data = $request->validated();
+        $user = auth()->user();
+        $healthcareWorker = $user->healthCareWorker;
+
+        $data['healthcare_worker_id'] = $healthcareWorker->id;
 
         $response = $this->medicalRecordRepository->store($data);
         return $this->medicalRecordRepository->getJsonResponse($response);

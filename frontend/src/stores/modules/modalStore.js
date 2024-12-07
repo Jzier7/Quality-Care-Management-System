@@ -11,6 +11,9 @@ export const useModalStore = defineStore('modal', {
     showDeletePatientModal: false,
     showViewPatientModal: false,
 
+    showAddRecordModal: false,
+    showDeleteRecordModal: false,
+
     showAddEmergencyContactModal: false,
     showDeleteEmergencyContactModal: false,
 
@@ -42,6 +45,14 @@ export const useModalStore = defineStore('modal', {
     setShowViewPatientModal(params) {
       this.showViewPatientModal = params;
     },
+
+    setShowAddRecordModal(params) {
+      this.showAddRecordModal = params;
+    },
+    setShowDeleteRecordModal(params) {
+      this.showDeleteRecordModal = params;
+    },
+
 
     setShowAddEmergencyContactModal(params) {
       this.showAddEmergencyContactModal = params;
