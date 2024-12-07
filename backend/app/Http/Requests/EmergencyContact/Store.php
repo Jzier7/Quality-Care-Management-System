@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Patient;
+namespace App\Http\Requests\EmergencyContact;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateStatus extends FormRequest
+class Store extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class UpdateStatus extends FormRequest
     {
         $user = Auth::user();
 
-        return $user && $user->isAdmin() || $user->isWorker();
+        return $user && $user->isAdmin();
     }
 
     /**
@@ -25,20 +25,20 @@ class UpdateStatus extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'exists:patients,id'],
-            'status' => ['required', 'string'],
+            'name' => ['required', 'string', 'max:255'],
+            'file' => ['required', 'file', 'image', 'max:' . env('MAX_FILE_UPLOAD_SIZE', '5000')], // Max size in KB
         ];
     }
 
     /**
-     * Get custom messages for validation errors.
+     * Get custom error messages for validation rules.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function messages(): array
     {
         return [
-            'id.exists' => 'Patient does not exist.',
+            'file.max' => 'The uploaded file size exceeds the allowed limit of ' . env('MAX_FILE_UPLOAD_SIZE', '5000') . ' KB.',
         ];
     }
 }

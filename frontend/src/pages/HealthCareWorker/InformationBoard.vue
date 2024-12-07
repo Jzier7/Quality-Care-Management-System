@@ -7,34 +7,14 @@
     </q-toolbar>
 
     <div class="q-gutter-md">
-      <q-carousel
-        v-model="slide"
-        transition-prev="jump-right"
-        transition-next="jump-left"
-        swipeable
-        animated
-        control-color="dark"
-        prev-icon="arrow_left"
-        next-icon="arrow_right"
-        navigation
-        padding
-        arrows
-        class="bg-white text-dark shadow-1 rounded-borders"
-        height="750px"
-      >
-        <q-carousel-slide name="style" class="column no-wrap flex-center">
+      <q-carousel v-model="slide" transition-prev="jump-right" transition-next="jump-left" swipeable animated
+        control-color="dark" prev-icon="arrow_left" next-icon="arrow_right" navigation padding arrows
+        class="bg-white text-dark shadow-1 rounded-borders" height="750px">
+        <q-carousel-slide v-for="(board, index) in informationBoards" :key="board.id" :name="`board-${index}`"
+          class="column no-wrap flex-center">
           <div class="q-mt-md text-center">
-            <img src="~/assets/image.jpeg" alt="">
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide name="tv" class="column no-wrap flex-center">
-          <div class="q-mt-md text-center">
-            <img src="~/assets/image2.jpeg" alt="">
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide name="layers" class="column no-wrap flex-center">
-          <div class="q-mt-md text-center">
-            <img src="~/assets/image3.jpeg" alt="">
+            <img v-if="board.files && board.files.length > 0" :src="getMediaURL(board.files[0])" alt="Image" />
+            <div v-else>No image available</div>
           </div>
         </q-carousel-slide>
       </q-carousel>
@@ -43,14 +23,33 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import informationBoardService from 'src/services/informationBoardService'
+import handleMedia from 'src/utils/mixin/handleMedia';
 
 export default {
-  setup () {
+  mixins: [handleMedia],
+  data() {
     return {
-      slide: ref('style'),
+      slide: '',
+      informationBoards: []
     }
+  },
+  methods: {
+    async fetchInformationBoards() {
+      try {
+        const response = await informationBoardService.getAllInformationBoards()
+        this.informationBoards = response.data.body
+
+        if (this.informationBoards.length > 0) {
+          this.slide = `board-0`
+        }
+      } catch (error) {
+        console.error('Error fetching information boards:', error)
+      }
+    }
+  },
+  mounted() {
+    this.fetchInformationBoards()
   }
 }
 </script>
-

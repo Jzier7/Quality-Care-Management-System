@@ -24,7 +24,7 @@ const routes = [
     meta: { middlewares: [admin] },
     children: [
       { path: 'healthcare-workers', component: () => import('pages/Admin/HealthCareWorkers.vue') },
-      { path: 'patients', component: () => import('src/pages/Admin/PatientInformations/IndexPage.vue') },
+      { path: 'medical-records', component: () => import('src/pages/Admin/PatientInformations.vue') },
       { path: 'information-board', component: () => import('pages/Admin/InformationBoard.vue') },
       { path: 'emergency-contact', component: () => import('pages/Admin/EmergencyContact.vue') },
     ]
@@ -35,7 +35,7 @@ const routes = [
     component: () => import('layouts/HealthCareWorkerLayout.vue'),
     meta: { middlewares: [worker] },
     children: [
-      { path: 'medical-records', component: () => import('pages/HealthCareWorker/MedicalRecords.vue') },
+      { path: 'medical-records', component: () => import('src/pages/Admin/PatientInformations.vue') },
       { path: 'schedule-checkup', component: () => import('pages/HealthCareWorker/ScheduleCheckUp.vue') },
       { path: 'information-board', component: () => import('pages/HealthCareWorker/InformationBoard.vue') },
     ]

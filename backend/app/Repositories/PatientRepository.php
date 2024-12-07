@@ -19,7 +19,7 @@ class PatientRepository extends JsonResponseFormat
      */
     public function retrievePaginate(array $params): array
     {
-        $query = Patient::with('user');
+        $query = Patient::with(['user', 'medical_records']);
 
         if (!empty($params['search'])) {
             $query->whereHas('user', function ($query) use ($params) {

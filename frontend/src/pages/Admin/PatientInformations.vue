@@ -60,6 +60,8 @@
 
           <!-- Actions -->
           <q-card-actions class="row justify-end">
+            <q-btn label="Medical Records" color="dark" @click="openViewPatientModal(patient)"
+              style="text-transform: capitalize;" class="q-mr-md" />
             <q-btn label="Edit" color="primary" @click="openEditPatientModal(patient)"
               style="text-transform: capitalize;" class="q-mr-md" />
             <q-btn label="Delete" color="negative" style="text-transform: capitalize;"
@@ -78,6 +80,7 @@
     <AddPatientModal :fetchPatients="fetchPatients" />
     <EditPatientModal :fetchPatients="fetchPatients" :editData="patientData" />
     <DeletePatientModal :fetchPatients="fetchPatients" :deleteData="patientData" />
+    <ViewPatientModal :fetchPatients="fetchPatients" :viewData="patientData" />
   </q-page>
 </template>
 
@@ -91,6 +94,7 @@ export default {
     AddPatientModal: defineAsyncComponent(() => import('components/Modals/Patient/AddPatient.vue')),
     EditPatientModal: defineAsyncComponent(() => import('components/Modals/Patient/EditPatient.vue')),
     DeletePatientModal: defineAsyncComponent(() => import('components/Modals/Patient/DeletePatient.vue')),
+    ViewPatientModal: defineAsyncComponent(() => import('components/Modals/Patient/ViewPatient.vue')),
   },
   data() {
     return {
@@ -136,6 +140,11 @@ export default {
       this.patientData = deleteData;
       const modalStore = useModalStore();
       modalStore.setShowDeletePatientModal(true);
+    },
+    openViewPatientModal(viewData) {
+      this.patientData = viewData;
+      const modalStore = useModalStore();
+      modalStore.setShowViewPatientModal(true);
     },
     updatePage(page) {
       this.currentPage = page;

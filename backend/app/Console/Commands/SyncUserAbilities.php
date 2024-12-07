@@ -46,6 +46,13 @@ class SyncUserAbilities extends Command
             2,
             8,
             11,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            22,
         ];
 
         $patientRouteIds = [
@@ -53,6 +60,8 @@ class SyncUserAbilities extends Command
             2,
             8,
             11,
+            22,
+            26
         ];
 
         // Syncing abilities for Admin

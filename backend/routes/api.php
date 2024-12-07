@@ -7,6 +7,8 @@ use App\Http\Controllers\RouteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HealthCareWorkerController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\InformationBoardController;
+use App\Http\Controllers\EmergencyContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
@@ -57,6 +59,26 @@ Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
         Route::prefix('retrieve')->group(function () {
             Route::get('all', [PatientController::class, 'retrieveAll']);
             Route::get('paginated', [PatientController::class, 'retrievePaginate']);
+        });
+    });
+
+    Route::prefix('informationBoard')->group(function () {
+        Route::post('store', [InformationBoardController::class, 'store']);
+        Route::delete('delete', [InformationBoardController::class, 'delete']);
+
+        Route::prefix('retrieve')->group(function () {
+            Route::get('all', [InformationBoardController::class, 'retrieveAll']);
+            Route::get('paginated', [InformationBoardController::class, 'retrievePaginate']);
+        });
+    });
+
+    Route::prefix('emergencyContact')->group(function () {
+        Route::post('store', [EmergencyContactController::class, 'store']);
+        Route::delete('delete', [EmergencyContactController::class, 'delete']);
+
+        Route::prefix('retrieve')->group(function () {
+            Route::get('all', [EmergencyContactController::class, 'retrieveAll']);
+            Route::get('paginated', [EmergencyContactController::class, 'retrievePaginate']);
         });
     });
 });

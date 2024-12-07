@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Patient;
+namespace App\Http\Requests\InformationBoard;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateStatus extends FormRequest
+class Delete extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class UpdateStatus extends FormRequest
     {
         $user = Auth::user();
 
-        return $user && $user->isAdmin() || $user->isWorker();
+        return $user && $user->isAdmin();
     }
 
     /**
@@ -25,20 +25,14 @@ class UpdateStatus extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'exists:patients,id'],
-            'status' => ['required', 'string'],
+            'id' => ['required', 'integer', 'exists:information_boards,id'],
         ];
     }
 
-    /**
-     * Get custom messages for validation errors.
-     *
-     * @return array
-     */
     public function messages(): array
     {
         return [
-            'id.exists' => 'Patient does not exist.',
+            'id.exists' => 'Information Board does not exist.',
         ];
     }
 }

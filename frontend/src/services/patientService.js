@@ -21,6 +21,11 @@ const patientService = {
     return response;
   },
 
+  async updatePatientStatus(data) {
+    const response = await api.patch('/api/patient/update/status', data );
+    return response;
+  },
+
   async deletePatient(data) {
     const response = await api.delete('/api/patient/delete', { data });
     return response;

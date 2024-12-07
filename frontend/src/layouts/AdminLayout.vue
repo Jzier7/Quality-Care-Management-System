@@ -24,7 +24,7 @@ const menuList = [
   {
     icon: 'person',
     label: 'Patients',
-    path: '/admin/patients',
+    path: '/admin/medical-records',
     separator: false
   },
   {

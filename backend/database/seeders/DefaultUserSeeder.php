@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use App\Models\Purok;
-use Faker\Factory as Faker;
+use App\Models\HealthCareWorker;
+use App\Models\Patient;
 
 class DefaultUserSeeder extends Seeder
 {
@@ -15,11 +15,11 @@ class DefaultUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
+        $faker = \Faker\Factory::create();
 
-        // Create an healthcare-worker user
-        User::create([
-            'first_name' => 'Admin',
+        // Create a healthcare-worker user
+        $worker = User::create([
+            'first_name' => 'Worker',
             'last_name' => 'User',
             'email' => 'worker@worker.com',
             'password' => Hash::make('password'),
@@ -28,13 +28,36 @@ class DefaultUserSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+        HealthCareWorker::create([
+            'user_id' => $worker->id,
+            'license_number' => $faker->unique()->word(),
+            'department' => $faker->word(),
+            'shift_start_time' => now()->toTimeString(),
+            'shift_end_time' => now()->addHours(8)->toTimeString(),
+            'position' => $faker->word(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         // Create a patient user
-        User::create([
+        $patient = User::create([
             'first_name' => 'Patient',
             'last_name' => 'User',
             'email' => 'patient@patient.com',
             'password' => Hash::make('password'),
-            'role_id' => 3,
+            'role_id' => 3, // Assuming 3 represents 'patient'
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Create a patient profile linked to the user
+        Patient::create([
+            'user_id' => $patient->id,
+            'birthdate' => $faker->date(),
+            'address' => $faker->address(),
+            'emergency_contact' => $faker->phoneNumber(),
+            'sex' => $faker->randomElement(['male', 'female']),
+            'status' => 'active', // Assuming status can be 'active'
             'created_at' => now(),
             'updated_at' => now(),
         ]);

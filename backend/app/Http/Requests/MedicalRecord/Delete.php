@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Patient;
+namespace App\Http\Requests\MedicalRecord;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateStatus extends FormRequest
+class Delete extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,20 +25,14 @@ class UpdateStatus extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'exists:patients,id'],
-            'status' => ['required', 'string'],
+            'id' => ['required', 'integer', 'exists:medical_records,id'],
         ];
     }
 
-    /**
-     * Get custom messages for validation errors.
-     *
-     * @return array
-     */
     public function messages(): array
     {
         return [
-            'id.exists' => 'Patient does not exist.',
+            'id.exists' => 'Medical Record does not exist.',
         ];
     }
 }

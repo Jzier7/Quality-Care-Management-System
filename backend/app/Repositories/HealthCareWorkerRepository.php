@@ -60,7 +60,11 @@ class HealthCareWorkerRepository extends JsonResponseFormat
      */
     public function retrieveAll(): array
     {
-        $healthCareWorkers = HealthCareWorker::select('id', 'name')->get();
+        $healthCareWorkers = HealthCareWorker::select('id')
+            ->with(['user' => function ($query) {
+                $query->select('first_name', 'last_name');
+            }])
+            ->get();
 
         return [
             'message' => 'All healthcare workers retrieved successfully',

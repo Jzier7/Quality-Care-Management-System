@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\HealthCareWorker\Retrieve;
-use App\Http\Requests\HealthCareWorker\Store;
-use App\Http\Requests\HealthCareWorker\Delete;
-use App\Repositories\HealthCareWorkerRepository;
+use App\Http\Requests\EmergencyContact\Retrieve;
+use App\Http\Requests\EmergencyContact\Store;
+use App\Http\Requests\EmergencyContact\Delete;
+use App\Repositories\EmergencyContactRepository;
 use Illuminate\Http\JsonResponse;
 
-class HealthCareWorkerController extends Controller
+class EmergencyContactController extends Controller
 {
     /**
-     * @var App\Repositories\HealthCareWorkerRepository
+     * @var App\Repositories\EmergencyContactRepository
      */
-    protected $healthCareWorkerRepository;
+    protected $emergencyContactRepository;
     public function __construct()
     {
-        $this->healthCareWorkerRepository = new HealthCareWorkerRepository;
+        $this->emergencyContactRepository = new EmergencyContactRepository;
     }
 
     /**
-     * Retrieves paginated healthCareWorker.
+     * Retrieves paginated emergencyContact.
      *
-     * @return Illuminate\Http\JsonResponse The healthCareWorker data in JSON format.
+     * @return Illuminate\Http\JsonResponse The emergencyContact data in JSON format.
      */
     public function retrievePaginate(Retrieve $request): JsonResponse
     {
@@ -32,23 +32,23 @@ class HealthCareWorkerController extends Controller
             'pageSize' => $request->input('pageSize', 10),
         ];
 
-        $response = $this->healthCareWorkerRepository->retrievePaginate($params);
-        return $this->healthCareWorkerRepository->getJsonResponse($response);
+        $response = $this->emergencyContactRepository->retrievePaginate($params);
+        return $this->emergencyContactRepository->getJsonResponse($response);
     }
 
     /**
-     * Retrieves all healthCareWorker.
+     * Retrieves all emergencyContact.
      *
-     * @return Illuminate\Http\JsonResponse The healthCareWorker data in JSON format.
+     * @return Illuminate\Http\JsonResponse The emergencyContact data in JSON format.
      */
     public function retrieveAll(): JsonResponse
     {
-        $response = $this->healthCareWorkerRepository->retrieveAll();
-        return $this->healthCareWorkerRepository->getJsonResponse($response);
+        $response = $this->emergencyContactRepository->retrieveAll();
+        return $this->emergencyContactRepository->getJsonResponse($response);
     }
 
     /**
-     * Add a healthCareWorker.
+     * Add a emergencyContact.
      *
      * @return Illuminate\Http\JsonResponse The user's data in JSON format.
      */
@@ -57,26 +57,12 @@ class HealthCareWorkerController extends Controller
 
         $data = $request->validated();
 
-        $response = $this->healthCareWorkerRepository->store($data);
-        return $this->healthCareWorkerRepository->getJsonResponse($response);
+        $response = $this->emergencyContactRepository->store($data);
+        return $this->emergencyContactRepository->getJsonResponse($response);
     }
 
     /**
-     * Update a healthCareWorker.
-     *
-     * @return Illuminate\Http\JsonResponse The user's data in JSON format.
-     */
-    public function update(Update $request): JsonResponse
-    {
-
-        $data = $request->validated();
-
-        $response = $this->healthCareWorkerRepository->update($data);
-        return $this->healthCareWorkerRepository->getJsonResponse($response);
-    }
-
-    /**
-     * Delete a healthCareWorker.
+     * Delete a emergencyContact status.
      *
      * @return Illuminate\Http\JsonResponse The user's data in JSON format.
      */
@@ -87,7 +73,7 @@ class HealthCareWorkerController extends Controller
             'id' => $request->input('id'),
         ];
 
-        $response = $this->healthCareWorkerRepository->delete($data);
-        return $this->healthCareWorkerRepository->getJsonResponse($response);
+        $response = $this->emergencyContactRepository->delete($data);
+        return $this->emergencyContactRepository->getJsonResponse($response);
     }
 }
