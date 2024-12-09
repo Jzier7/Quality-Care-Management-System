@@ -93,26 +93,73 @@ class AuthRepository extends JsonResponseFormat
     }
 
     /**
-     * Checks Auth
-     *
+     * @param array $data
      * @return array
      */
-    public function checkAuth(): array
+    public function forgotPassword(array $data): array
     {
-        $user = null;
-        $isAuthenticated = Auth::check();
-        $viaRemember = Auth::viaRemember();
+        try {
+            $user = User::where('first_name', $data['first_name'])
+                ->where('middle_name', $data['middle_name'])
+                ->where('last_name', $data['last_name'])
+                ->where('email', $data['email'])
+                ->first();
 
-        if ($isAuthenticated && $viaRemember) {
-            $user = User::with(['files', 'role.abilities.route'])->find(Auth::id());
+            if ($user) {
+                return [
+                    'message' => 'User exists',
+                    'body' => $user,
+                    'status' => 200
+                ];
+            }
+
+            return [
+                'message' => 'User not found',
+                'status' => 404
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+                'status' => 500
+            ];
         }
+    }
 
-        return [
-            'body' => [
-                'isAuthenticated' => $isAuthenticated,
-                'viaRemember' => $viaRemember,
-                'user' => $user
-            ]
-        ];
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function updatePassword(array $data): array
+    {
+        try {
+            $user = User::find($data['userId']);
+
+            if (!$user) {
+                return [
+                    'message' => 'User not found',
+                    'status' => 404
+                ];
+            }
+
+            if ($data['password'] !== $data['confirm_password']) {
+                return [
+                    'message' => 'Passwords do not match',
+                    'status' => 422
+                ];
+            }
+
+            $user->password = bcrypt($data['password']);
+            $user->save();
+
+            return [
+                'message' => 'Password updated successfully',
+                'status' => 200
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+                'status' => 500
+            ];
+        }
     }
 }

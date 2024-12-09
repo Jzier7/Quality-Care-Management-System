@@ -39,7 +39,7 @@ class SyncUserAbilities extends Command
         $allRouteIds = DB::table('routes')->pluck('id')->toArray();
 
         // Define specific route IDs for each role
-        $adminRouteIds = array_diff($allRouteIds, [28, 29]);
+        $adminRouteIds = array_diff($allRouteIds, [29, 30, 34, 35, 36, 37]);
 
         $healthcareWorkerRouteIds = [
             1,

@@ -117,7 +117,7 @@ export default {
       this.$router.push('/signup');
     },
     forgotPassword() {
-      // Implement forgot password logic
+      this.$router.push('/forgot-password');
     },
   },
 };
