@@ -48,7 +48,7 @@ export default {
       const options = {
         hour: 'numeric',
         minute: '2-digit',
-        hour12: true
+        hour12: true,
       };
       return new Date(date).toLocaleString('en-US', options).replace(',', '');
     },
@@ -59,7 +59,7 @@ export default {
         day: 'numeric',
         hour: 'numeric',
         minute: '2-digit',
-        hour12: true
+        hour12: true,
       };
       return new Date(date).toLocaleString('en-US', options);
     },
@@ -86,5 +86,32 @@ export default {
         return this.formatDateTime(announcementDate);
       }
     },
+    formatEventDateRange(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      if (start.toDateString() === end.toDateString()) {
+        return `${start.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+          - ${start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
+          to ${end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+      } else {
+        return `${start.toLocaleString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        })} to ${end.toLocaleString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        })}`;
+      }
+    },
   },
 };
+

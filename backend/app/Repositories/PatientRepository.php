@@ -54,16 +54,25 @@ class PatientRepository extends JsonResponseFormat
     }
 
     /**
-     * Get all patients
+     * Get all patients with their user's full name
      *
      * @return array
      */
     public function retrieveAll(): array
     {
-        $patients = Patient::select('id', 'name')->get();
+        $patients = Patient::with('user')->get();
+
+        $patients = $patients->map(function ($patient) {
+            $fullName = $patient->user->first_name . ' ' . $patient->user->last_name;
+
+            return [
+                'id' => $patient->id,
+                'name' => $fullName,
+            ];
+        });
 
         return [
-            'message' => 'All healthcare workers retrieved successfully',
+            'message' => 'All patients retrieved successfully',
             'body' => $patients,
             'total' => $patients->count(),
         ];

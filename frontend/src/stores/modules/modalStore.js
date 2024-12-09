@@ -20,6 +20,9 @@ export const useModalStore = defineStore('modal', {
     showAddInformationBoardModal: false,
     showDeleteInformationBoardModal: false,
 
+    showAddScheduleModal: false,
+    showDeleteScheduleModal: false,
+
   }),
   actions: {
 
@@ -66,6 +69,13 @@ export const useModalStore = defineStore('modal', {
     },
     setShowDeleteInformationBoardModal(params) {
       this.showDeleteInformationBoardModal = params;
+    },
+
+    setShowAddScheduleModal(params) {
+      this.showAddScheduleModal = params;
+    },
+    setShowDeleteScheduleModal(params) {
+      this.showDeleteScheduleModal = params;
     },
 
   },

@@ -24,7 +24,7 @@
                     <span class="font-semibold text-dark">Patient's Name:</span>
                     <span class="text-dark">{{ records[0].patient?.user?.first_name }} {{
                       records[0].patient?.user?.last_name
-                    }}</span>
+                      }}</span>
                   </div>
                   <div class="form-row flex justify-between text-lg">
                     <span class="font-semibold text-dark">Date of Birth:</span>
@@ -72,7 +72,7 @@
               dense readonly outlined class="q-mb-md" />
             <q-input v-if="userData.patient" v-model="userData.patient.sex" label="Sex" dense readonly outlined
               class="q-mb-md" />
-            <q-input v-if="userData.patient" v-model="userData.patient.status" label="Status" dense outlined
+            <q-input v-if="userData.patient" v-model="userData.patient.status" label="Status" dense readonly outlined
               class="q-mb-md" />
           </q-card>
         </div>

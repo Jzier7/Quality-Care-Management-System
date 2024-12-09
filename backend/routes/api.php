@@ -10,6 +10,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\InformationBoardController;
 use App\Http\Controllers\EmergencyContactController;
 use App\Http\Controllers\MedicalRecordController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
@@ -91,6 +92,16 @@ Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
             Route::get('', [MedicalRecordController::class, 'retrieve']);
             Route::get('all', [MedicalRecordController::class, 'retrieveAll']);
             Route::get('paginated', [MedicalRecordController::class, 'retrievePaginate']);
+        });
+    });
+
+    Route::prefix('schedule')->group(function () {
+        Route::post('store', [ScheduleController::class, 'store']);
+        Route::delete('delete', [ScheduleController::class, 'delete']);
+
+        Route::prefix('retrieve')->group(function () {
+            Route::get('patient', [ScheduleController::class, 'retrievePatient']);
+            Route::get('worker', [ScheduleController::class, 'retrieveWorker']);
         });
     });
 });

@@ -11,13 +11,8 @@
       <q-card flat bordered class="w-full h-full">
         <q-card-section>
           <h2 class="text-dark text-xl font-bold mb-4">Calendar</h2>
-          <vue-cal
-            ref="calendar"
-            class="vue-cal"
-            :events="calendarEvents"
-            @event-click="handleEventClick"
-            :config="calendarConfig"
-          />
+          <vue-cal ref="calendar" class="vue-cal" :events="calendarEvents" @event-click="handleEventClick"
+            :disable-views="['years', 'year', 'week']" :time-from="7 * 60" :time-to="20 * 60" :time-step="30" />
         </q-card-section>
       </q-card>
     </div>
@@ -26,18 +21,26 @@
       <q-card flat bordered class="w-full h-full">
         <q-card-section>
           <h2 class="text-dark text-xl font-bold mb-4">Appointments</h2>
-          <div v-if="appointments.length === 0" class="text-center text-gray-500">
+          <div class="row justify-end items-center q-pb-md">
+            <form @submit.prevent="filterSchedules" class="q-gutter-md">
+              <q-input rounded outlined dense v-model="search" placeholder="Search Appointments"
+                @input="filterSchedules" color="primary">
+                <template v-slot:prepend>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </form>
+          </div>
+          <div v-if="upcomingAppointments.length === 0" class="text-center text-gray-500 q-pt-md">
             No appointments scheduled.
           </div>
           <q-list>
-            <q-item
-              v-for="appointment in appointments"
-              :key="appointment.id"
-              class="q-mb-sm bg-light q-pa-sm rounded-lg hover:bg-gray-100"
-            >
-              <q-item-section>
+            <q-item v-for="appointment in upcomingAppointments" :key="appointment.id"
+              class="q-mb-sm bg-light q-pa-sm rounded-lg hover:bg-gray-100">
+              <q-item-section class="q-pa-sm">
                 <q-item-label class="text-dark text-lg font-semibold">{{ appointment.title }}</q-item-label>
-                <q-item-label class="text-dark caption">{{ appointment.date }}</q-item-label>
+                <q-item-label class="text-dark caption">{{ formatEventDateRange(appointment.start, appointment.end)
+                  }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -50,29 +53,57 @@
 <script>
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
+import scheduleService from 'src/services/scheduleService';
+import handleDateTime from 'src/utils/mixin/handleDateTime';
+
 
 export default {
   name: 'ScheduleCheckup',
   components: {
-    VueCal
+    VueCal,
   },
+  mixins: [handleDateTime],
   data() {
     return {
-      calendarEvents: [
-        { name: 'Checkup', start: '2024-09-20T10:00:00', end: '2024-09-20T11:00:00' },
-      ],
-      appointments: [
-        { id: 1, title: 'Annual Checkup', date: '2024-09-20 10:00 AM' },
-        { id: 2, title: 'Follow-up Visit', date: '2024-09-25 2:00 PM' },
-      ],
-      calendarConfig: {
-      }
+      calendarEvents: [],
+      upcomingAppointments: [],
+      search: '',
+      orderBy: 'asc',
     };
+  },
+  watch: {
+    search() {
+      this.currentPage = 1;
+
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.fetchSchedules();
+      }, 1000);
+    },
   },
   methods: {
     handleEventClick(event) {
       console.log('Event clicked:', event);
     },
+    filterSchedules() {
+      this.fetchSchedules();
+    },
+    async fetchSchedules() {
+      try {
+        const response = await scheduleService.getAllPatientSchedules({
+          search: this.search,
+          orderBy: this.orderBy
+        });
+        this.calendarEvents = response.data.body.all_schedules;
+        this.upcomingAppointments = response.data.body.upcoming_schedules;
+      } catch (error) {
+        console.error('Error fetching schedules:', error);
+      }
+    },
+  },
+  mounted() {
+    this.fetchSchedules();
   },
 };
 </script>
@@ -80,7 +111,7 @@ export default {
 <style scoped>
 .vue-cal {
   width: 100%;
-  height: 600px; /* Adjust height as needed */
+  height: 600px;
 }
 
 .q-card {
@@ -88,7 +119,7 @@ export default {
 }
 
 .q-card-section {
-  padding: 16px; /* Adjust padding as needed */
+  padding: 16px;
 }
 
 .q-item {
@@ -96,4 +127,3 @@ export default {
   border-radius: 8px;
 }
 </style>
-
