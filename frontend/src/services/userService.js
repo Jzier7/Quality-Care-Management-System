@@ -11,8 +11,13 @@ const userService = {
     return response;
   },
 
-  async updateUser(data) {
-    const response = await api.patch('/api/users/update/data', data);
+  async updateWorker(data) {
+    const response = await api.patch('/api/users/update/worker', data);
+    return response;
+  },
+
+  async updatePatient(data) {
+    const response = await api.patch('/api/users/update/patient', data);
     return response;
   },
 

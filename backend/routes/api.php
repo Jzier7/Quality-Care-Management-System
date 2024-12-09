@@ -37,7 +37,8 @@ Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
         Route::delete('delete', [UserController::class, 'delete']);
 
         Route::prefix('update')->group(function () {
-            Route::patch('data', [UserController::class, 'updateData']);
+            Route::patch('worker', [UserController::class, 'updateWorker']);
+            Route::patch('patient', [UserController::class, 'updatePatient']);
         });
     });
 

@@ -82,10 +82,7 @@ export default {
         emergency_contact: '',
         sex: '',
       },
-      sexOptions: [
-        { label: 'Male', value: 'male' },
-        { label: 'Female', value: 'female' }
-      ]
+      sexOptions: ['Male', 'Female'],
     };
   },
   methods: {
@@ -93,7 +90,6 @@ export default {
       try {
         const formToSubmit = {
           ...this.form,
-          sex: this.form.sex.value,
         };
 
         const response = await authService.register(formToSubmit);

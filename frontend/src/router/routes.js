@@ -38,6 +38,7 @@ const routes = [
       { path: 'medical-records', component: () => import('src/pages/Admin/PatientInformations.vue') },
       { path: 'schedule-checkup', component: () => import('pages/HealthCareWorker/ScheduleCheckUp.vue') },
       { path: 'information-board', component: () => import('pages/HealthCareWorker/InformationBoard.vue') },
+      { path: 'user-profile', component: () => import('pages/HealthCareWorker/UserProfile.vue') },
     ]
   },
 
@@ -51,6 +52,7 @@ const routes = [
       { path: 'schedule-checkup', component: () => import('pages/Patient/ScheduleCheckUp.vue') },
       { path: 'information-board', component: () => import('pages/HealthCareWorker/InformationBoard.vue') },
       { path: 'emergency-contact', component: () => import('pages/Patient/EmergencyContact.vue') },
+      { path: 'user-profile', component: () => import('pages/Patient/UserProfile.vue') },
     ]
   },
 

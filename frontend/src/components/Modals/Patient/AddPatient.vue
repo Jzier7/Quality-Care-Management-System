@@ -65,10 +65,7 @@ export default {
       },
       errors: {},
       modalStore: useModalStore(),
-      sexOptions: [
-        { label: 'Male', value: 'male' },
-        { label: 'Female', value: 'female' }
-      ],
+      sexOptions: ['Male', 'Female'],
       patientPassword: '',
       showPasswordModal: false,
     };
@@ -100,7 +97,6 @@ export default {
 
         const formToSubmit = {
           ...this.localForm,
-          sex: this.localForm.sex.value,
         };
         const response = await patientService.storePatient(formToSubmit);
         this.patientPassword = response.data.body;

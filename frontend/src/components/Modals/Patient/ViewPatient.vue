@@ -135,16 +135,8 @@ export default {
   data() {
     return {
       modalStore: useModalStore(),
-      sexOptions: [
-        { label: 'Male', value: 'male' },
-        { label: 'Female', value: 'female' },
-      ],
-      statusOptions: [
-        { label: 'Admitted', value: 'Admitted' },
-        { label: 'Discharged', value: 'Discharged' },
-        { label: 'Under Treatment', value: 'Under Treatment' },
-        { label: 'Transferred', value: 'Transferred' },
-      ],
+      sexOptions: ['Male', 'Female'],
+      statusOptions: ['Admitted', 'Discharged', 'Under Treatment', 'Transferred'],
       patientData: {},
       newRecord: {
         serial_number: '',

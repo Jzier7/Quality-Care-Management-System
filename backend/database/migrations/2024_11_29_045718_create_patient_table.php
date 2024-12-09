@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime('birthdate');
             $table->string('address');
             $table->string('emergency_contact')->nullable();
-            $table->enum('sex', ['male', 'female']);
+            $table->string('sex');
             $table->string('status')->nullable();
             $table->timestamps();
 

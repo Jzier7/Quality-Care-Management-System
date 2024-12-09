@@ -32,7 +32,7 @@ class Store extends FormRequest
             'birthdate' => ['required', 'date', 'before:today'],
             'address' => ['required', 'string'],
             'emergency_contact' => ['required', 'string', 'regex:/^(?:\+639|09)\d{9}$/'],
-            'sex' => ['required', 'in:male,female'],
+            'sex' => ['required', 'in:Male,Female'],
         ];
     }
 

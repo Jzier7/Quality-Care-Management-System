@@ -22,11 +22,11 @@
           <div class="row justify-between items-center text-dark q-gutter-md">
             <div class="col-12 col-md-5">
               <q-item-label class="text-dark">Start Time</q-item-label>
-              <q-time v-model="localForm.start_time" label="Start Time" dense outlined />
+              <q-input v-model="localForm.start_time" label="Start Time" dense outlined type="time" class="q-mb-md" />
             </div>
             <div class="col-12 col-md-5">
               <q-item-label class="text-dark">End Time</q-item-label>
-              <q-time v-model="localForm.end_time" label="End Time" dense outlined />
+              <q-input v-model="localForm.end_time" label="End Time" dense outlined type="time" class="q-mb-md" />
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ namespace App\Http\Requests\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateData extends FormRequest
+class UpdatePatient extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class UpdateData extends FormRequest
     {
         $user = Auth::user();
 
-        if ($user && ($user->isSuperAdmin() || $user->id === (int) $this->input('id'))) {
+        if ($user->id === (int) $this->input('id')) {
             return true;
         }
 
@@ -33,10 +33,10 @@ class UpdateData extends FormRequest
             'first_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'birthdate' => ['required', 'date', 'before:today'],
-            'gender' => ['required', 'string', 'in:male,female'],
-            'purok' => ['required' , 'integer', 'exists:puroks,id'],
-            'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $this->id],
+            'patient.birthdate' => ['required', 'date', 'before:today'],
+            'patient.address' => ['required', 'string'],
+            'patient.emergency_contact' => ['required', 'string', 'regex:/^(?:\+639|09)\d{9}$/'],
+            'patient.sex' => ['required', 'in:Male,Female'],
         ];
     }
 
@@ -44,10 +44,6 @@ class UpdateData extends FormRequest
     {
         return [
             'id.exists' => 'User does not exist.',
-            'birthdate.date' => 'Birthdate must be a valid date.',
-            'gender.in' => 'Gender must be one of the following: Male, Female',
-            'username.unique' => 'Username has already been taken.',
         ];
     }
 }
-

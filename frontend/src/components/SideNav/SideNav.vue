@@ -48,19 +48,30 @@ export default {
   data() {
     return {
       drawer: false,
-      userName: '',
+    };
+  },
+  computed: {
+    userStore() {
+      return useUserStore();
+    },
+    userName() {
+      const { first_name, last_name } = this.userStore.userData || {};
+      return first_name && last_name ? `${first_name} ${last_name}` : '';
     }
   },
   methods: {
     navigateTo(path) {
       this.$router.push(path);
+    },
+    async fetchUserDataIfNeeded() {
+      // Check if user data is already available before fetching
+      if (!this.userStore.userData || Object.keys(this.userStore.userData).length === 0) {
+        await this.userStore.fetchUser();
+      }
     }
   },
   created() {
-    const userStore = useUserStore();
-    userStore.fetchUser().then(() => {
-      this.userName = userStore.userData.first_name + ' ' + userStore.userData.last_name;
-    });
-  },
-}
+    this.fetchUserDataIfNeeded();
+  }
+};
 </script>

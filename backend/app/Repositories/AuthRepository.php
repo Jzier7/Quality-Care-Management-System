@@ -28,6 +28,12 @@ class AuthRepository extends JsonResponseFormat
 
         $user = User::with(['role.abilities.route'])->find(Auth::id());
 
+        if ($user->role_id == 2) {
+            $user->load('healthCareWorker');
+        } elseif ($user->role_id == 3) {
+            $user->load('patient');
+        }
+
         return [
             'message' => 'Login successful',
             'body' => $user

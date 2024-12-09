@@ -51,10 +51,7 @@ export default {
         status: '',
       },
       modalStore: useModalStore(),
-      sexOptions: [
-        { label: 'Male', value: 'male' },
-        { label: 'Female', value: 'female' }
-      ],
+      sexOptions: ['Male', 'Female'],
     };
   },
   watch: {

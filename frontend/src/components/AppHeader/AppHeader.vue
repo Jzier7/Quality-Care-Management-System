@@ -64,8 +64,14 @@ export default {
       });
     },
     goToProfile() {
-      // Navigate to the profile page
-      this.$router.push('/profile');
+      const userStore = useUserStore();
+      const role = userStore.userData?.role?.slug;
+
+      if (role === USER_ROLES.WORKER) {
+        this.$router.push('/healthcare-worker/user-profile');
+      } else if (role === USER_ROLES.PATIENT) {
+        this.$router.push('/patient/user-profile');
+      }
     }
   }
 }

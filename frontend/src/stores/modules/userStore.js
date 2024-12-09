@@ -14,10 +14,20 @@ export const useUserStore = defineStore('user', {
         console.error("Error fetching user: ", error);
       }
     },
-    async updateUser(data) {
+    async updateWorker(data) {
       try {
-        const response = await userService.updateUser(data);
-        this.userData = response.data.body;
+        const response = await userService.updateWorker(data);
+        this.fetchUser();
+        return { success: true, response };
+      } catch (error) {
+        console.error("Error editing user: ", error);
+        return { success: false, error: error.response.data };
+      }
+    },
+    async updatePatient(data) {
+      try {
+        const response = await userService.updatePatient(data);
+        this.fetchUser();
         return { success: true, response };
       } catch (error) {
         console.error("Error editing user: ", error);

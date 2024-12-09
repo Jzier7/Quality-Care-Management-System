@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\RetrieveUsers;
-use App\Http\Requests\User\RetrieveAdmins;
-use App\Http\Requests\User\Store;
-use App\Http\Requests\User\UpdateData;
-use App\Http\Requests\User\UpdateStatus;
-use App\Http\Requests\User\UpdateParticipationCount;
+use App\Http\Requests\User\UpdateWorker;
+use App\Http\Requests\User\UpdatePatient;
 use App\Http\Requests\User\Delete;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
@@ -56,25 +53,6 @@ class UserController extends Controller
     }
 
     /**
-     * Retrieves paginated admins.
-     *
-     * @return Illuminate\Http\JsonResponse The user's data in JSON format.
-     */
-    public function retrieveAdmins(RetrieveAdmins $request): JsonResponse
-    {
-        $params = [
-            'search' => $request->input('search'),
-            'currentPage' => $request->input('currentPage', 1),
-            'pageSize' => $request->input('pageSize', 10),
-            'orderBy' => $request->input('orderBy', 'desc'),
-            'isAdmin' => true
-        ];
-
-        $response = $this->userRepository->retrieveUsers($params);
-        return $this->userRepository->getJsonResponse($response);
-    }
-
-    /**
      * Retrieves all users.
      *
      * @return Illuminate\Http\JsonResponse The user's data in JSON format.
@@ -86,25 +64,27 @@ class UserController extends Controller
     }
 
     /**
-     * Add a user.
+     * Update a user.
      *
      * @return Illuminate\Http\JsonResponse The user's data in JSON format.
      */
-    public function store(Store $request): JsonResponse
+    public function updateWorker(UpdateWorker $request)
     {
 
         $data = [
+            'id' => $request->input('id'),
             'first_name' => $request->input('first_name'),
             'middle_name' => $request->input('middle_name'),
             'last_name' => $request->input('last_name'),
-            'email' => $request->input('email'),
-            'birthdate' => $request->input('birthdate'),
-            'gender' => $request->input('gender'),
-            'purok' => $request->input('purok'),
-            'username' => $request->input('username'),
+            'worker_id' => $request->input('health_care_worker.id'),
+            'license_number' => $request->input('health_care_worker.license_number'),
+            'department' => $request->input('health_care_worker.department'),
+            'position' => $request->input('health_care_worker.position'),
+            'shift_start_time' => $request->input('health_care_worker.shift_start_time'),
+            'shift_end_time' => $request->input('health_care_worker.shift_end_time'),
         ];
 
-        $response = $this->userRepository->store($data);
+        $response = $this->userRepository->updateWorker($data);
         return $this->userRepository->getJsonResponse($response);
     }
 
@@ -113,7 +93,7 @@ class UserController extends Controller
      *
      * @return Illuminate\Http\JsonResponse The user's data in JSON format.
      */
-    public function updateData(UpdateData $request): JsonResponse
+    public function updatePatient(UpdatePatient $request): JsonResponse
     {
 
         $data = [
@@ -121,13 +101,14 @@ class UserController extends Controller
             'first_name' => $request->input('first_name'),
             'middle_name' => $request->input('middle_name'),
             'last_name' => $request->input('last_name'),
-            'birthdate' => $request->input('birthdate'),
-            'gender' => $request->input('gender'),
-            'purok' => $request->input('purok'),
-            'username' => $request->input('username'),
+            'patient_id' => $request->input('patient.id'),
+            'birthdate' => $request->input('patient.birthdate'),
+            'address' => $request->input('patient.address'),
+            'emergency_contact' => $request->input('patient.emergency_contact'),
+            'sex' => $request->input('patient.sex'),
         ];
 
-        $response = $this->userRepository->updateData($data);
+        $response = $this->userRepository->updatePatient($data);
         return $this->userRepository->getJsonResponse($response);
     }
 
@@ -144,58 +125,6 @@ class UserController extends Controller
         ];
 
         $response = $this->userRepository->delete($data);
-        return $this->userRepository->getJsonResponse($response);
-    }
-
-    /**
-     * Update user status.
-     *
-     * @return Illuminate\Http\JsonResponse The user's data in JSON format.
-     */
-    public function updateStatus(UpdateStatus $request): JsonResponse
-    {
-
-        $data = [
-            'id' => $request->input('id'),
-            'status' => $request->input('status')
-        ];
-
-        $response = $this->userRepository->updateStatus($data);
-        return $this->userRepository->getJsonResponse($response);
-    }
-
-    /**
-     * Update user participation counts.
-     *
-     * @return \Illuminate\Http\JsonResponse The participation count of users in JSON format
-     */
-    public function updateParticipationCount(UpdateParticipationCount $request): JsonResponse
-    {
-        $data = $request->all();
-
-        $response = $this->userRepository->updateParticipationCount($data);
-        return response()->json($response);
-    }
-
-    /**
-     * Retrieves the total number of registered voters.
-     *
-     * @return Illuminate\Http\JsonResponse The voters count in JSON format.
-     */
-    public function getVotersCount(): JsonResponse
-    {
-        $response = $this->userRepository->getVotersCount();
-        return $this->userRepository->getJsonResponse($response);
-    }
-
-    /**
-     * Retrieves the count of users per "Purok".
-     *
-     * @return Illuminate\Http\JsonResponse The count per Purok in JSON format.
-     */
-    public function getCountPerPurok(): JsonResponse
-    {
-        $response = $this->userRepository->getCountPerPurok();
         return $this->userRepository->getJsonResponse($response);
     }
 }
