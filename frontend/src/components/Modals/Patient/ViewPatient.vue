@@ -32,6 +32,13 @@
               <div v-for="record in records" :key="record.id">
                 <q-card flat bordered class="w-full shadow-lg q-mt-md">
                   <q-card-section class="text-center">
+
+                    <div class="row justify-end mt-6">
+                      <q-btn v-if="!isPatient" flat round icon="print" color="primary" @click="printRecord(record)" />
+                      <q-btn v-if="isWorker" flat round color="negative" icon="delete"
+                        @click="openDeleteRecordModal(record)" />
+                    </div>
+
                     <div>
                       <h2 class="text-dark text-3xl font-bold">{{ record.healthcare_worker.user.first_name }} {{
                         record.healthcare_worker.user.last_name }}</h2>
@@ -71,10 +78,6 @@
                       Doctor's Signature
                     </q-card-section>
 
-                    <div v-if="isWorker" class="row justify-end mt-6">
-                      <q-btn flat color="negative" icon="delete" @click="openDeleteRecordModal(record)"
-                        label="Delete" />
-                    </div>
                   </q-card-section>
                 </q-card>
               </div>
@@ -180,6 +183,10 @@ export default {
       const userStore = useUserStore();
       return userStore.userData?.role.slug === USER_ROLES.WORKER;
     },
+    isPatient() {
+      const userStore = useUserStore();
+      return userStore.userData?.role.slug === USER_ROLES.PATIENT;
+    },
   },
   methods: {
     closeModal() {
@@ -277,6 +284,100 @@ export default {
     filterRecords() {
       this.fetchRecords();
     },
+    printRecord(record) {
+      const printWindow = window.open('', '_blank');
+
+      const imageUrl = 'https://i.imgur.com/z8d2rgj.png';
+
+      const img = new Image();
+      img.src = imageUrl;
+
+      img.onload = () => {
+        const printableContent = `
+          <html>
+            <head>
+              <title>Medical Record</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  margin: 20px;
+                  padding: 20px;
+                  color: #125488;
+                  text-align: center;
+                }
+                .card {
+                  margin: 0 auto;
+                  font-family: Arial, sans-serif;
+                }
+                .card-header {
+                  background-color: #f9f9f9;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  padding-top: 2rem;
+                }
+                .card-header img {
+                  width: 100px;
+                  margin-bottom: 10px;
+                }
+                .card-body {
+                  padding: 16px;
+                }
+                .card-body .info p {
+                  font-size: 1.2rem;
+                  text-align: justify;
+                  line-height: 1.5;
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                }
+                .card-body .info p strong {
+                  font-weight: bold;
+                }
+                .card-footer {
+                  padding-top: 2rem;
+                  text-align: center;
+                }
+                .card-footer p {
+                  margin: 0;
+                  font-style: italic;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="card">
+                <div class="card-header">
+                  <div class="header-content">
+                    <div class="user-details">
+                      <img src="${img.src}" alt="Lapu-Lapu District Hospital Logo">
+                      <h2>Lapu-Lapu District Hospital</h2>
+                      <h4>${record.healthcare_worker.user.first_name} ${record.healthcare_worker.user.last_name}</h4>
+                      <p>${record.healthcare_worker.position}</p>
+                      <p>${record.serial_number}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="info">
+                    <p><strong>Patient's Name:</strong> ${record.patient.user.first_name} ${record.patient.user.last_name}</p>
+                    <p><strong>Date of Birth:</strong> ${this.formatDate(record.patient.birthdate, 'MMM D YYYY')}</p>
+                    <p><strong>Gender:</strong> ${record.patient.sex}</p>
+                    <p><strong>Date:</strong> ${this.formatDate(record.date, 'MMM D YYYY')}</p>
+                    <p><strong>Diagnosis:</strong> ${record.diagnosis}</p>
+                    <p><strong>Rx:</strong> ${record.prescriptions}</p>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <p>Doctor's Signature</p>
+                </div>
+              </div>
+            </body>
+          </html>`;
+        printWindow.document.write(printableContent);
+        printWindow.document.close();
+        printWindow.print();
+      };
+    }
   },
 };
 </script>

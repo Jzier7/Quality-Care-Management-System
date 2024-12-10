@@ -24,7 +24,7 @@
                     <span class="font-semibold text-dark">Patient's Name:</span>
                     <span class="text-dark">{{ records[0].patient?.user?.first_name }} {{
                       records[0].patient?.user?.last_name
-                      }}</span>
+                    }}</span>
                   </div>
                   <div class="form-row flex justify-between text-lg">
                     <span class="font-semibold text-dark">Date of Birth:</span>
@@ -59,21 +59,22 @@
         <div class="q-col-12 q-col-md-6">
           <q-card flat bordered class="q-pa-md">
             <h5 class="text-primary">Patient Information</h5>
-            <q-input v-if="userData.patient" v-model="userData.first_name" label="First Name" dense readonly outlined
+            <q-input v-if="records[0]?.patient?.user?.first_name" v-model="records[0].patient.user.first_name"
+              label="First Name" dense readonly outlined class="q-mb-md" />
+            <q-input v-if="records[0]?.patient?.user?.middle_name" v-model="records[0].patient.user.middle_name"
+              label="Middle Name" dense readonly outlined class="q-mb-md" />
+            <q-input v-if="records[0]?.patient?.user?.last_name" v-model="records[0].patient.user.last_name"
+              label="Last Name" dense readonly outlined class="q-mb-md" />
+            <q-input v-if="records[0]?.patient?.birthdate" v-model="userAge" label="Age" dense readonly outlined
               class="q-mb-md" />
-            <q-input v-if="userData.patient" v-model="userData.middle_name" label="Middle Name" dense readonly outlined
-              class="q-mb-md" />
-            <q-input v-if="userData.patient" v-model="userData.last_name" label="Last Name" dense readonly outlined
-              class="q-mb-md" />
-            <q-input v-if="userData.patient" v-model="userAge" label="Age" dense readonly outlined class="q-mb-md" />
-            <q-input v-if="userData.patient" v-model="userData.patient.address" label="Address" dense readonly outlined
-              class="q-mb-md" />
-            <q-input v-if="userData.patient" v-model="userData.patient.emergency_contact" label="Emergency Contact"
-              dense readonly outlined class="q-mb-md" />
-            <q-input v-if="userData.patient" v-model="userData.patient.sex" label="Sex" dense readonly outlined
-              class="q-mb-md" />
-            <q-input v-if="userData.patient" v-model="userData.patient.status" label="Status" dense readonly outlined
-              class="q-mb-md" />
+            <q-input v-if="records[0]?.patient?.address" v-model="records[0].patient.address" label="Address" dense
+              readonly outlined class="q-mb-md" />
+            <q-input v-if="records[0]?.patient?.emergency_contact" v-model="records[0].patient.emergency_contact"
+              label="Emergency Contact" dense readonly outlined class="q-mb-md" />
+            <q-input v-if="records[0]?.patient?.sex" v-model="records[0].patient.sex" label="Sex" dense readonly
+              outlined class="q-mb-md" />
+            <q-input v-if="records[0]?.patient?.status" v-model="records[0].patient.status" label="Status" dense
+              readonly outlined class="q-mb-md" />
           </q-card>
         </div>
       </div>
@@ -84,22 +85,17 @@
 <script>
 import medicalRecordService from 'src/services/medicalRecordService';
 import handleDateTime from 'src/utils/mixin/handleDateTime';
-import { useUserStore } from 'src/stores/modules/userStore';
 
 export default {
   mixins: [handleDateTime],
   data() {
     return {
-      userStore: useUserStore(),
       records: [],
     };
   },
   computed: {
-    userData() {
-      return this.userStore.userData || {};
-    },
     userAge() {
-      return this.calculateAge(this.userData.patient?.birthdate);
+      return this.calculateAge(this.records[0].patient?.birthdate);
     },
   },
   mounted() {
