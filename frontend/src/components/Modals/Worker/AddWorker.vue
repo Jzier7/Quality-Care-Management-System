@@ -12,7 +12,8 @@
         <q-select v-model="localForm.department" :options="departments" label="Department" dense outlined
           class="q-mb-md" />
 
-        <q-select v-model="localForm.position" :options="positions" label="Position" dense outlined class="q-mb-md" />
+        <q-select v-model="localForm.position" :options="positions" label="Position" option-value="id"
+          option-label="name" dense outlined class="q-mb-md" />
 
         <q-input v-model="localForm.shift_start_time" label="Shift Start Time" dense outlined type="time"
           class="q-mb-md w-100" />
@@ -51,6 +52,7 @@
 <script>
 import { Notify } from 'quasar';
 import workerService from 'src/services/workerService';
+import positionService from 'src/services/positionService';
 import { useModalStore } from 'src/stores/modules/modalStore';
 
 export default {
@@ -79,9 +81,7 @@ export default {
         'Emergency', 'Cardiology', 'Orthopedics', 'Pediatrics', 'Radiology', 'OB-GYN', 'General Surgery',
         'Internal Medicine', 'Neurology', 'Dermatology', 'Anesthesiology', 'Psychiatry', 'Oncology', 'Pulmonology', 'Endocrinology',
       ],
-      positions: [
-        'Doctor', 'Nurse', 'Technician', 'Therapist', 'Medical Assistant', 'Administrative Staff', 'Maintenance Staff',
-      ],
+      positions: [],
       workerPassword: '',
       showPasswordModal: false,
     };
@@ -111,7 +111,10 @@ export default {
     },
     async addWorker() {
       try {
-        const response = await workerService.storeWorker({ ...this.localForm });
+        const response = await workerService.storeWorker({
+          position_id: this.localForm.position.id,
+          ...this.localForm
+        });
         this.workerPassword = response.data.body;
 
         Notify.create({
@@ -153,7 +156,18 @@ export default {
           });
         });
     },
+    async fetchPositions() {
+      try {
+        const response = await positionService.getAllPositions();
+        this.positions = response.data.body;
+      } catch (error) {
+        console.error('Error fetching positions:', error);
+      }
+    },
   },
+  mounted() {
+    this.fetchPositions();
+  }
 };
 </script>
 

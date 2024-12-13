@@ -28,6 +28,7 @@ class Store extends FormRequest
             'patient_id' => ['nullable', 'exists:patients,id'],
             'serial_number' => ['required', 'string', 'max:255'],
             'date' => ['required', 'date'],
+            'healthcare_worker_id' => ['required', 'integer', 'exists:healthcare_workers,id'],
             'diagnosis' => ['required', 'string', 'max:255'],
             'prescriptions' => ['required', 'string'],
         ];

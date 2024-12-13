@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('department');
             $table->time('shift_start_time');
             $table->time('shift_end_time');
-            $table->string('position');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

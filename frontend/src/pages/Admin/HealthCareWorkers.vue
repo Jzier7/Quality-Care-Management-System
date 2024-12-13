@@ -53,7 +53,7 @@
                   <strong>SHIFTING:</strong> {{ formatTime(worker.shift_start_time) }} - {{
                     formatTime(worker.shift_end_time) }}
                 </p>
-                <p class="text-gray-500 text-body2"><strong>POSITION:</strong> {{ worker.position }}</p>
+                <p class="text-gray-500 text-body2"><strong>POSITION:</strong> {{ worker.position.name }}</p>
               </div>
             </div>
           </q-card-section>
@@ -62,8 +62,8 @@
           <q-card-actions class="row justify-end">
             <q-btn label="Edit" color="primary" @click="openEditWorkerModal(worker)" style="text-transform: capitalize;"
               class="q-mr-md" />
-            <q-btn label="Delete" color="negative" style="text-transform: capitalize;"
-              @click="openDeleteWorkerModal(worker)" />
+            <!-- <q-btn label="Delete" color="negative" style="text-transform: capitalize;"
+              @click="openDeleteWorkerModal(worker)" /> -->
           </q-card-actions>
         </q-card>
       </div>

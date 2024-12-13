@@ -19,7 +19,7 @@ class HealthCareWorkerRepository extends JsonResponseFormat
      */
     public function retrievePaginate(array $params): array
     {
-        $query = HealthCareWorker::with('user');
+        $query = HealthCareWorker::with('user', 'position');
 
         if (!empty($params['search'])) {
             $query->whereHas('user', function ($query) use ($params) {
@@ -60,11 +60,16 @@ class HealthCareWorkerRepository extends JsonResponseFormat
      */
     public function retrieveAll(): array
     {
-        $healthCareWorkers = HealthCareWorker::select('id')
-            ->with(['user' => function ($query) {
-                $query->select('first_name', 'last_name');
-            }])
-            ->get();
+        $healthCareWorkers = HealthCareWorker::with('user', 'position')->get();
+
+        $healthCareWorkers = $healthCareWorkers->map(function ($healthCareWorker) {
+            $fullName = $healthCareWorker->user->first_name . ' ' . $healthCareWorker->user->last_name;
+
+            return [
+                'id' => $healthCareWorker->id,
+                'name' => $fullName,
+            ];
+        });
 
         return [
             'message' => 'All healthcare workers retrieved successfully',
@@ -90,6 +95,7 @@ class HealthCareWorkerRepository extends JsonResponseFormat
                 'first_name' => $data['first_name'],
                 'middle_name' => $data['middle_name'],
                 'last_name' => $data['last_name'],
+                'role_id' => 2,
                 'password' => Hash::make($password),
             ]);
 
@@ -99,7 +105,7 @@ class HealthCareWorkerRepository extends JsonResponseFormat
                 'department' => $data['department'] ?? null,
                 'shift_start_time' => $data['shift_start_time'] ?? null,
                 'shift_end_time' => $data['shift_end_time'] ?? null,
-                'position' => $data['position'] ?? null,
+                'position_id' => $data['position_id'] ?? null,
             ];
 
             HealthCareWorker::create($healthCareWorker);
@@ -144,7 +150,7 @@ class HealthCareWorkerRepository extends JsonResponseFormat
                 'department' => $data['department'] ?? $healthCareWorker->department,
                 'shift_start_time' => $data['shift_start_time'] ?? $healthCareWorker->shift_start_time,
                 'shift_end_time' => $data['shift_end_time'] ?? $healthCareWorker->shift_end_time,
-                'position' => $data['position'] ?? $healthCareWorker->position,
+                'position_id' => $data['position_id'] ?? $healthCareWorker->position_id,
             ]);
 
             DB::commit();

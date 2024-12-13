@@ -45,7 +45,10 @@
               </q-item-section>
 
               <q-item-section side>
-                <q-btn rounded flat icon="delete" @click="openDeleteScheduleModal(appointment)" color="negative" />
+                <div class="row items-center">
+                  <q-btn rounded flat icon="edit" @click="openEditScheduleModal(appointment)" color="secondary" />
+                    <q-btn rounded flat icon="delete" @click="openDeleteScheduleModal(appointment)" color="negative" />
+                </div>
               </q-item-section>
             </q-item>
           </q-list>
@@ -54,6 +57,7 @@
     </div>
 
     <AddScheduleModal :fetchSchedules="fetchSchedules" />
+    <EditScheduleModal :fetchSchedules="fetchSchedules" :editData="scheduleData" />
     <DeleteScheduleModal :fetchSchedules="fetchSchedules" :deleteData="scheduleData" />
   </q-page>
 </template>
@@ -71,6 +75,7 @@ export default {
   components: {
     VueCal,
     AddScheduleModal: defineAsyncComponent(() => import('components/Modals/Schedule/AddSchedule.vue')),
+    EditScheduleModal: defineAsyncComponent(() => import('components/Modals/Schedule/EditSchedule.vue')),
     DeleteScheduleModal: defineAsyncComponent(() => import('components/Modals/Schedule/DeleteSchedule.vue')),
   },
   mixins: [handleDateTime],
@@ -104,6 +109,11 @@ export default {
     openAddScheduleModal() {
       const modalStore = useModalStore();
       modalStore.setShowAddScheduleModal(true);
+    },
+    openEditScheduleModal(editData) {
+      this.scheduleData = editData;
+      const modalStore = useModalStore();
+      modalStore.setShowEditScheduleModal(true);
     },
     openDeleteScheduleModal(deleteData) {
       this.scheduleData = deleteData;

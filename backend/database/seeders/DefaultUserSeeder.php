@@ -34,7 +34,7 @@ class DefaultUserSeeder extends Seeder
             'department' => 'OB-GYN',
             'shift_start_time' => now()->format('H:i'),
             'shift_end_time' => now()->addHours(8)->format('H:i'),
-            'position' => 'Doctor',
+            'position_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

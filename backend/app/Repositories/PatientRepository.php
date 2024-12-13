@@ -95,6 +95,7 @@ class PatientRepository extends JsonResponseFormat
                 'first_name' => $data['first_name'],
                 'middle_name' => $data['middle_name'],
                 'last_name' => $data['last_name'],
+                'role_id' => 3,
                 'password' => Hash::make($password),
             ]);
 

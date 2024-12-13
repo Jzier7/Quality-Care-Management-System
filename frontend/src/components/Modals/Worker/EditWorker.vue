@@ -12,7 +12,8 @@
         <q-select v-model="localForm.department" :options="departments" label="Department" dense outlined
           class="q-mb-md" />
 
-        <q-select v-model="localForm.position" :options="positions" label="Position" dense outlined class="q-mb-md" />
+        <q-select v-model="localForm.position" :options="positions" label="Position" option-value="id"
+          option-label="name" dense outlined class="q-mb-md" />
 
         <q-input v-model="localForm.shift_start_time" label="Shift Start Time" dense outlined type="time"
           class="q-mb-md w-100" />
@@ -33,6 +34,7 @@
 import { Notify } from 'quasar';
 import { useModalStore } from 'src/stores/modules/modalStore';
 import workerService from 'src/services/workerService';
+import positionService from 'src/services/positionService';
 
 export default {
   props: {
@@ -76,15 +78,7 @@ export default {
         'Pulmonology',
         'Endocrinology',
       ],
-      positions: [
-        'Doctor',
-        'Nurse',
-        'Technician',
-        'Therapist',
-        'Medical Assistant',
-        'Administrative Staff',
-        'Maintenance Staff',
-      ],
+      positions: [],
     };
   },
   watch: {
@@ -122,6 +116,7 @@ export default {
       try {
         const response = await workerService.updateWorker({
           id: this.editData.id,
+          position_id: this.localForm.position.id,
           ...this.localForm,
         });
 
@@ -141,7 +136,18 @@ export default {
         });
       }
     },
+    async fetchPositions() {
+      try {
+        const response = await positionService.getAllPositions();
+        this.positions = response.data.body;
+      } catch (error) {
+        console.error('Error fetching positions:', error);
+      }
+    },
   },
+  mounted() {
+    this.fetchPositions();
+  }
 };
 </script>
 

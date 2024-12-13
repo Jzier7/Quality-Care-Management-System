@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 
-class Store extends FormRequest
+class Update extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,6 +26,7 @@ class Store extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => ['required', 'integer', 'exists:schedules,id'],
             'patient_id' => ['required', 'exists:patients,id'],
             'title' => ['required', 'string', 'max:255'],
             'start' => ['required', 'date', 'before:end'],

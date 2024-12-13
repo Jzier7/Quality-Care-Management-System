@@ -42,7 +42,7 @@
                     <div>
                       <h2 class="text-dark text-3xl font-bold">{{ record.healthcare_worker.user.first_name }} {{
                         record.healthcare_worker.user.last_name }}</h2>
-                      <p class="text-dark text-xl">{{ record.healthcare_worker.position }}</p>
+                      <p class="text-dark text-xl">{{ record.healthcare_worker.position.name }}</p>
                       <p class="text-dark text-base">{{ record.serial_number }}</p>
                     </div>
 

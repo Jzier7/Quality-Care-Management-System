@@ -21,7 +21,12 @@ export const useModalStore = defineStore('modal', {
     showDeleteInformationBoardModal: false,
 
     showAddScheduleModal: false,
+    showEditScheduleModal: false,
     showDeleteScheduleModal: false,
+
+    showAddPositionModal: false,
+    showEditPositionModal: false,
+    showDeletePositionModal: false,
 
   }),
   actions: {
@@ -74,8 +79,21 @@ export const useModalStore = defineStore('modal', {
     setShowAddScheduleModal(params) {
       this.showAddScheduleModal = params;
     },
+    setShowEditScheduleModal(params) {
+      this.showEditScheduleModal = params;
+    },
     setShowDeleteScheduleModal(params) {
       this.showDeleteScheduleModal = params;
+    },
+
+    setShowAddPositionModal(params) {
+      this.showAddPositionModal = params;
+    },
+    setShowEditPositionModal(params) {
+      this.showEditPositionModal = params;
+    },
+    setShowDeletePositionModal(params) {
+      this.showDeletePositionModal = params;
     },
 
   },

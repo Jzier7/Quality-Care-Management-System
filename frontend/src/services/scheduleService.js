@@ -16,6 +16,11 @@ const scheduleService = {
     return response;
   },
 
+  async updateSchedule(data) {
+    const response = await api.patch('/api/schedule/update', data );
+    return response;
+  },
+
   async deleteSchedule(data) {
     const response = await api.delete('/api/schedule/delete', { data });
     return response;

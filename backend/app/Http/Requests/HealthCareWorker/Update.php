@@ -40,7 +40,7 @@ class Update extends FormRequest
                 'required',
                 'regex:/^([01]?[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?$/',
             ],
-            'position' => ['required', 'string', 'max:255'],
+            'position_id' => ['required', 'integer', 'exists:positions,id'],
         ];
     }
 

@@ -13,6 +13,8 @@
           <h5 class="text-primary">Record Information</h5>
           <q-input v-model="newRecord.serial_number" label="Serial Number" dense outlined class="q-mb-md" />
           <q-input v-model="newRecord.date" label="Date" dense outlined class="q-mb-md" type="date" />
+          <q-select v-model="newRecord.worker" :options="workers" option-value="id" option-label="name"
+            label="Healthcare Worker" dense outlined class="q-mb-md" />
           <q-input v-model="newRecord.diagnosis" label="Diagnosis" dense outlined class="q-mb-md" />
           <q-editor v-model="newRecord.prescriptions" label="Prescriptions" dense outlined class="q-mb-md editor"
             min-height="10rem" />
@@ -27,6 +29,7 @@
 import { Notify } from 'quasar';
 import { useModalStore } from 'src/stores/modules/modalStore';
 import medicalRecordService from 'src/services/medicalRecordService';
+import workerService from 'src/services/workerService';
 
 export default {
   props: {
@@ -38,10 +41,12 @@ export default {
       modalStore: useModalStore(),
       newRecord: {
         serial_number: '',
+        worker: '',
         date: new Date().toISOString().split('T')[0],
         diagnosis: '',
         prescriptions: '',
       },
+      workers: []
     };
   },
   methods: {
@@ -52,6 +57,7 @@ export default {
       try {
         await medicalRecordService.storeMedicalRecord({
           patient_id: this.patientId,
+          healthcare_worker_id: this.newRecord.worker.id,
           ...this.newRecord,
         });
 
@@ -76,7 +82,18 @@ export default {
         });
       }
     },
+    async fetchWorkers() {
+      try {
+        const response = await workerService.getAllWorkers();
+        this.workers = response.data.body;
+      } catch (error) {
+        console.error('Error fetching workers:', error);
+      }
+    },
   },
+  mounted() {
+    this.fetchWorkers();
+  }
 };
 </script>
 

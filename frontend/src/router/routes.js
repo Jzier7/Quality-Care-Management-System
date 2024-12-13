@@ -23,8 +23,10 @@ const routes = [
     component: () => import('layouts/AdminLayout.vue'),
     meta: { middlewares: [admin] },
     children: [
+      { path: 'dashboard', component: () => import('pages/Admin/AdminDashboard.vue') },
       { path: 'healthcare-workers', component: () => import('pages/Admin/HealthCareWorkers.vue') },
       { path: 'medical-records', component: () => import('src/pages/Admin/PatientInformations.vue') },
+      { path: 'positions', component: () => import('src/pages/Admin/WorkerPositions.vue') },
       { path: 'information-board', component: () => import('pages/Admin/InformationBoard.vue') },
       { path: 'emergency-contact', component: () => import('pages/Admin/EmergencyContact.vue') },
     ]

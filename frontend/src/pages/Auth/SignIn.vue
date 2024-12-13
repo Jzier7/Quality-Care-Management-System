@@ -96,7 +96,7 @@ export default {
           });
 
           if (data?.role.slug === USER_ROLES.ADMIN) {
-            this.$router.push('/admin/healthcare-workers');
+            this.$router.push('/admin/dashboard');
           } else if (data?.role.slug === USER_ROLES.WORKER) {
             this.$router.push('/healthcare-worker/medical-records');
           } else {

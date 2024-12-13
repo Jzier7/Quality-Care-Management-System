@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Patient;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserRepository extends JsonResponseFormat
 {

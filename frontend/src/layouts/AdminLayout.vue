@@ -16,6 +16,12 @@ import { defineComponent, ref, defineAsyncComponent } from 'vue';
 
 const menuList = [
   {
+    icon: 'dashboard',
+    label: 'Dashboard',
+    path: '/admin/dashboard',
+    separator: false
+  },
+  {
     icon: 'medical_information',
     label: 'HealthCare Workers',
     path: '/admin/healthcare-workers',
@@ -26,6 +32,12 @@ const menuList = [
     label: 'Patients',
     path: '/admin/medical-records',
     separator: false
+  },
+  {
+    icon: 'badge',
+    label: 'Positions',
+    path: '/admin/positions',
+    separator: true
   },
   {
     icon: 'announcement',

@@ -11,6 +11,8 @@ use App\Http\Controllers\InformationBoardController;
 use App\Http\Controllers\EmergencyContactController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
@@ -98,11 +100,25 @@ Route::middleware(['auth:sanctum', 'role.guard'])->group(function () {
 
     Route::prefix('schedule')->group(function () {
         Route::post('store', [ScheduleController::class, 'store']);
+        Route::patch('update', [ScheduleController::class, 'update']);
         Route::delete('delete', [ScheduleController::class, 'delete']);
 
         Route::prefix('retrieve')->group(function () {
             Route::get('patient', [ScheduleController::class, 'retrievePatient']);
             Route::get('worker', [ScheduleController::class, 'retrieveWorker']);
+        });
+    });
+
+    Route::get('dashboard', [DashboardController::class, 'retrieve']);
+
+    Route::prefix('position')->group(function () {
+        Route::post('store', [PositionController::class, 'store']);
+        Route::patch('update', [PositionController::class, 'update']);
+        Route::delete('delete', [PositionController::class, 'delete']);
+
+        Route::prefix('retrieve')->group(function () {
+            Route::get('all', [PositionController::class, 'retrieveAll']);
+            Route::get('paginated', [PositionController::class, 'retrievePaginate']);
         });
     });
 });

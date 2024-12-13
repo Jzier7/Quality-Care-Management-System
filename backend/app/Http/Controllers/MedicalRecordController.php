@@ -73,10 +73,6 @@ class MedicalRecordController extends Controller
     {
 
         $data = $request->validated();
-        $user = auth()->user();
-        $healthcareWorker = $user->healthCareWorker;
-
-        $data['healthcare_worker_id'] = $healthcareWorker->id;
 
         $response = $this->medicalRecordRepository->store($data);
         return $this->medicalRecordRepository->getJsonResponse($response);

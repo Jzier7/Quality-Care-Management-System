@@ -20,7 +20,7 @@ class MedicalRecordRepository extends JsonResponseFormat
      */
     public function retrievePaginate(array $params): array
     {
-        $query = MedicalRecord::with(['healthcare_worker.user', 'patient.user']);
+        $query = MedicalRecord::with(['healthcare_worker.user', 'healthcare_worker.position',  'patient.user']);
 
         $query->where('patient_id', $params['patient']);
 
@@ -76,7 +76,7 @@ class MedicalRecordRepository extends JsonResponseFormat
      */
     public function retrieve(int $id): array
     {
-        $record = MedicalRecord::with('healthcare_worker.user', 'patient.user')
+        $record = MedicalRecord::with('healthcare_worker.user', 'healthcare_worker.position', 'patient.user')
             ->where('patient_id', $id)
             ->latest()
             ->first();

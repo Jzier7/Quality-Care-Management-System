@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Schedule\Retrieve;
 use App\Http\Requests\Schedule\Store;
+use App\Http\Requests\Schedule\Update;
 use App\Http\Requests\Schedule\Delete;
 use App\Repositories\ScheduleRepository;
 use Illuminate\Http\JsonResponse;
@@ -68,6 +69,20 @@ class ScheduleController extends Controller
         $data['healthcare_worker_id'] = $healthcareWorker->id;
 
         $response = $this->scheduleRepository->store($data);
+        return $this->scheduleRepository->getJsonResponse($response);
+    }
+
+    /**
+     * Update a schedule.
+     *
+     * @return Illuminate\Http\JsonResponse The user's data in JSON format.
+     */
+    public function update(Update $request): JsonResponse
+    {
+
+        $data = $request->validated();
+
+        $response = $this->scheduleRepository->update($data);
         return $this->scheduleRepository->getJsonResponse($response);
     }
 

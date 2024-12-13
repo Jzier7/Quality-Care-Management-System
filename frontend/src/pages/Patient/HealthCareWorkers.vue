@@ -15,7 +15,7 @@
         <h2 class="text-dark text-2xl font-bold mb-2">
           {{ firstRecord.healthcare_worker?.user?.first_name }} {{ firstRecord.healthcare_worker?.user?.last_name }}
         </h2>
-        <p class="text-dark text-lg mb-2">Specialization: {{ firstRecord.healthcare_worker?.position }}</p>
+        <p class="text-dark text-lg mb-2">Specialization: {{ firstRecord.healthcare_worker?.position.name }}</p>
         <p class="text-dark text-lg mb-4">License #: {{ firstRecord.healthcare_worker?.license_number }}</p>
 
         <div class="space-y-4">

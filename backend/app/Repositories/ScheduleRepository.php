@@ -32,7 +32,7 @@ class ScheduleRepository extends JsonResponseFormat
 
         if (!empty($params['orderBy'])) {
             $query->orderBy('updated_at', $params['orderBy']);
-            $upcomingQuery->orderBy('updated_at', $params['orderBy']);
+            $upcomingQuery->orderBy('start', $params['orderBy']);
         }
 
         $allSchedules = $query->get();
@@ -68,7 +68,7 @@ class ScheduleRepository extends JsonResponseFormat
 
         if (!empty($params['orderBy'])) {
             $query->orderBy('updated_at', $params['orderBy']);
-            $upcomingQuery->orderBy('updated_at', $params['orderBy']);
+            $upcomingQuery->orderBy('start', $params['orderBy']);
         }
 
         $allSchedules = $query->get();
@@ -100,6 +100,40 @@ class ScheduleRepository extends JsonResponseFormat
 
             return [
                 'message' => 'schedule added successfully',
+                'body' => $schedule,
+            ];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return [
+                'error' => $e->getMessage(),
+                'status' => 500,
+            ];
+        }
+    }
+
+    /**
+     * Update a schedule.
+     *
+     * @param array $data
+     * @return array
+     */
+    public function update(array $data): array
+    {
+        DB::beginTransaction();
+        try {
+            $schedule = Schedule::findOrFail($data['id']);
+
+            $schedule->update([
+                'title' => $data['title'] ?? $schedule->title,
+                'patient_id' => $data['patient_id'] ?? $schedule->patient_id,
+                'start' => $data['start'] ?? $schedule->start,
+                'end' => $data['end'] ?? $schedule->end,
+            ]);
+
+            DB::commit();
+
+            return [
+                'message' => 'schedule updated successfully',
                 'body' => $schedule,
             ];
         } catch (\Exception $e) {

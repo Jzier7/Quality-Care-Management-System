@@ -19,12 +19,17 @@ class HealthCareWorker extends Model
         'department',
         'shift_start_time',
         'shift_end_time',
-        'position'
+        'position_id'
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class);
     }
 
     public function medical_records(): HasMany
