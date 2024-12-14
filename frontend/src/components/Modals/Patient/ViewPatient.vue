@@ -352,7 +352,7 @@ export default {
                       <img src="${img.src}" alt="Lapu-Lapu District Hospital Logo">
                       <h2>Lapu-Lapu District Hospital</h2>
                       <h4>${record.healthcare_worker.user.first_name} ${record.healthcare_worker.user.last_name}</h4>
-                      <p>${record.healthcare_worker.position}</p>
+                      <p>${record.healthcare_worker.position.name}</p>
                       <p>${record.serial_number}</p>
                     </div>
                   </div>

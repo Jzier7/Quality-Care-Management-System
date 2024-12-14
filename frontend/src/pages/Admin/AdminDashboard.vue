@@ -21,10 +21,14 @@
                 <div class="text-h6 text-primary"><strong>Patients Overview</strong></div>
                 <div class="text-subtitle1 text-grey-7">{{ patient.total }} Total Patients</div>
                 <div class="q-mt-sm">
-                  <div class="text-caption text-grey-6">Admitted: <span class="text-primary">{{  patient.admitted }}</span></div>
-                  <div class="text-caption text-grey-6">Discharged: <span class="text-primary">{{ patient.discharged }}</span></div>
-                  <div class="text-caption text-grey-6">Under Treatment: <span class="text-primary">{{ patient.under_treatment }}</span></div>
-                  <div class="text-caption text-grey-6">Transferred: <span class="text-primary">{{ patient.transferred }}</span></div>
+                  <div class="text-caption text-grey-6">Admitted: <span class="text-primary">{{ patient.admitted
+                      }}</span></div>
+                  <div class="text-caption text-grey-6">Discharged: <span class="text-primary">{{ patient.discharged
+                      }}</span></div>
+                  <div class="text-caption text-grey-6">Under Treatment: <span class="text-primary">{{
+                    patient.under_treatment }}</span></div>
+                  <div class="text-caption text-grey-6">Transferred: <span class="text-primary">{{ patient.transferred
+                      }}</span></div>
                 </div>
               </div>
             </div>
@@ -41,8 +45,9 @@
                 <div class="text-h6 text-primary"><strong>Healthcare Staff</strong></div>
                 <div class="text-subtitle1 text-grey-7">{{ worker.total }} Total Staff</div>
                 <div class="q-mt-sm">
-                  <div class="text-caption text-grey-6">Doctors: <span class="text-primary">{{ worker.doctor }}</span></div>
-                  <div class="text-caption text-grey-6">Nurses: <span class="text-primary">{{ worker.nurse }}</span></div>
+                  <div v-for="(count, position) in worker.details" :key="position" class="text-caption text-grey-6">
+                    {{ position }}: <span class="text-primary">{{ count }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -55,13 +60,7 @@
       <q-card flat bordered class="full-height">
         <q-card-section>
           <div class="row text-h6 text-primary justify-center"><strong>Users Added Today</strong></div>
-          <q-table
-            :rows="users"
-            :columns="columns"
-            row-key="id"
-            flat
-            v-if="users.length > 0"
-          >
+          <q-table :rows="users" :columns="columns" row-key="id" flat v-if="users.length > 0">
             <template v-slot:header="props">
               <q-tr :props="props">
                 <q-th v-for="col in props.cols" :key="col.name" :props="props" class="text-primary text-bold">
@@ -136,4 +135,3 @@ export default {
   font-weight: bold;
 }
 </style>
-
