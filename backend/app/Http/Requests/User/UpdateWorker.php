@@ -32,7 +32,7 @@ class UpdateWorker extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'health_care_worker.license_number' => ['required', 'string', 'max:50'],
             'health_care_worker.department' => ['required', 'string', 'max:100'],
-            'health_care_worker.position' => ['required', 'string', 'max:100'],
+            'health_care_worker.position_id' => ['required', 'integer', 'exists:positions,id'],
             'health_care_worker.shift_start_time' => [
                 'required',
                 'regex:/^([01]?[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?$/',

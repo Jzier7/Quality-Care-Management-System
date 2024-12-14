@@ -30,8 +30,9 @@
           outlined class="q-mb-md" :disable="!isEditing"
           :error-message="errors.department ? errors.department[0] : ''" />
 
-        <q-select v-model="localForm.health_care_worker.position" :options="positions" label="Position" dense outlined
-          class="q-mb-md" :disable="!isEditing" :error-message="errors.position ? errors.position[0] : ''" />
+        <q-select v-model="localForm.health_care_worker.position" :options="positions" label="Position"
+          option-value="id" option-label="name" dense outlined class="q-mb-md" :disable="!isEditing"
+          :error-message="errors.position ? errors.position[0] : ''" />
 
         <q-input v-model="localForm.health_care_worker.shift_start_time" label="Shift Start Time" dense outlined
           type="time" class="q-mb-md w-100" :disable="!isEditing"
@@ -48,6 +49,7 @@
 <script>
 import { Notify } from 'quasar';
 import { useUserStore } from 'src/stores/modules/userStore';
+import positionService from 'src/services/positionService';
 
 export default {
   name: 'UserInfo',
@@ -76,9 +78,7 @@ export default {
         'Emergency', 'Cardiology', 'Orthopedics', 'Pediatrics', 'Radiology', 'OB-GYN', 'General Surgery',
         'Internal Medicine', 'Neurology', 'Dermatology', 'Anesthesiology', 'Psychiatry', 'Oncology', 'Pulmonology', 'Endocrinology',
       ],
-      positions: [
-        'Doctor', 'Nurse', 'Technician', 'Therapist', 'Medical Assistant', 'Administrative Staff', 'Maintenance Staff',
-      ],
+      positions: [],
     };
   },
   methods: {
@@ -93,7 +93,14 @@ export default {
     },
     async updateUserInfo() {
       const userStore = useUserStore();
-      const { success, response, error } = await userStore.updateWorker(this.localForm);
+      const formData = {
+        ...this.localForm,
+        health_care_worker: {
+          ...this.localForm.health_care_worker,
+          position_id: this.localForm.health_care_worker.position.id
+        }
+      };
+      const { success, response, error } = await userStore.updateWorker(formData);
       if (success) {
         this.isEditing = false;
         Notify.create({
@@ -119,9 +126,18 @@ export default {
           shift_end_time: ''
         }
       };
-    }
+    },
+    async fetchPositions() {
+      try {
+        const response = await positionService.getAllPositions();
+        this.positions = response.data.body;
+      } catch (error) {
+        console.error('Error fetching positions:', error);
+      }
+    },
   },
   mounted() {
+    this.fetchPositions();
     this.fetchUserData();
   },
 };

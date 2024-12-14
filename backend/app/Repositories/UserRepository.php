@@ -25,7 +25,7 @@ class UserRepository extends JsonResponseFormat
 
         if ($user) {
             if ($user->role_id == 2) {
-                $user->load('healthCareWorker');
+                $user->load('healthCareWorker.position');
             } elseif ($user->role_id == 3) {
                 $user->load('patient');
             }
@@ -65,7 +65,7 @@ class UserRepository extends JsonResponseFormat
             $worker->update([
                 'license_number' => $data['license_number'],
                 'department' => $data['department'],
-                'position' => $data['position'],
+                'position_id' => $data['position_id'],
                 'shift_start_time' => $data['shift_start_time'],
                 'shift_end_time' => $data['shift_end_time'],
             ]);

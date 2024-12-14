@@ -79,7 +79,7 @@ class UserController extends Controller
             'worker_id' => $request->input('health_care_worker.id'),
             'license_number' => $request->input('health_care_worker.license_number'),
             'department' => $request->input('health_care_worker.department'),
-            'position' => $request->input('health_care_worker.position'),
+            'position_id' => $request->input('health_care_worker.position_id'),
             'shift_start_time' => $request->input('health_care_worker.shift_start_time'),
             'shift_end_time' => $request->input('health_care_worker.shift_end_time'),
         ];

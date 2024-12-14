@@ -73,8 +73,10 @@ export default {
   methods: {
     closeModal() {
       this.modalStore.setShowAddPatientModal(false);
+      this.clearForm();
     },
     closePasswordModal() {
+      this.patientPassword = '';
       this.showPasswordModal = false;
       this.clearForm();
     },
@@ -90,7 +92,6 @@ export default {
         sex: '',
       };
       this.errors = {};
-      this.patientPassword = '';
     },
     async addPatient() {
       try {

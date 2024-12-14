@@ -52,6 +52,16 @@ export default {
   methods: {
     closeModal() {
       this.modalStore.setShowAddRecordModal(false);
+      this.resetForm();
+    },
+    resetForm() {
+      this.newRecord = {
+        serial_number: '',
+        date: new Date().toISOString().split('T')[0],
+        diagnosis: '',
+        prescriptions: '',
+        worker: null,
+      };
     },
     async saveRecord() {
       try {

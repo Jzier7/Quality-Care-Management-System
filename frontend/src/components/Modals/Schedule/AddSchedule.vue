@@ -74,6 +74,7 @@ export default {
   methods: {
     closeModal() {
       this.modalStore.setShowAddScheduleModal(false);
+      this.clearForm();
     },
     clearForm() {
       this.localForm = {

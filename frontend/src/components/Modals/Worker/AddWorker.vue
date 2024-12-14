@@ -89,8 +89,10 @@ export default {
   methods: {
     closeModal() {
       this.modalStore.setShowAddWorkerModal(false);
+      this.clearForm();
     },
     closePasswordModal() {
+      this.workerPassword = '';
       this.showPasswordModal = false;
       this.clearForm();
     },
@@ -107,7 +109,6 @@ export default {
         shift_end_time: '',
       };
       this.errors = {};
-      this.workerPassword = '';
     },
     async addWorker() {
       try {
@@ -125,8 +126,8 @@ export default {
 
 
         this.fetchWorkers();
-        this.closeModal();
         this.showPasswordModal = true;
+        this.closeModal();
       } catch (error) {
         Notify.create({
           type: 'negative',

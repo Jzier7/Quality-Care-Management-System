@@ -44,6 +44,7 @@ export default {
   methods: {
     closeModal() {
       this.modalStore.setShowAddInformationBoardModal(false);
+      this.resetForm();
     },
     resetForm() {
       this.form = {

@@ -61,7 +61,8 @@ class SyncUserAbilities extends Command
             34,
             35,
             36,
-            38
+            38,
+            43
         ];
 
         $patientRouteIds = [
