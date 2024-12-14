@@ -264,6 +264,7 @@ export default {
           status: this.patientData.status,
         });
 
+        this.fetchPatients();
         Notify.create({
           type: 'positive',
           position: 'top',
